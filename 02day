@@ -57,7 +57,7 @@ ishouldgodo
 之后再推送直接 git push
 
 
-07day
+07day  ok
 查看有哪些分支  git  branch
 默认master分支
 
@@ -66,6 +66,97 @@ git  checkout -b 分支名
 
 此时在看看分支 发现有两个分支了
 
+
 ---------
 @  会指向src文件
+
+08day ok
+
+form表单  对齐方式
+搭建html
+
+09day
+01==引入公共css
+assets下创建css文件夹 命名为reset.css
+它是公共样式 、
+公共东西  在 main.js 文件中引入
+
+10day  ok
+Vue.use(xx)  这一种是vue插件的用法
+说明elementui就是一个插件
+
+02==>重新写axios的插件 
+在src下创建一个插件文件为plugins  有http.js文件
+根据官方插件  重新写axios的插件 
+http.js文件如下
+{
+    import axios from "axios"
+    const MyHttpServer={}
+    MyHttpServer.install=(Vue)=>{
+        Vue.prototype.$http=axios
+    }
+
+    export default MyHttpServer
+}
+
+在main.js中去引入
+import MyServerHttp from "@/plugins/http.js";
+Vue.use(MyServerHttp);
+
+11day ok
+01==》给axios设置统一的青丘地址 如何发送青丘
+http.js文件如下
+{
+    import axios from "axios";
+    const MyHttpServer = {};
+    MyHttpServer.install = Vue => {
+    axios.defaults.baseURL = "http://api.xiaomadagege.cn:8808/api/private/v1/"; //new add
+    Vue.prototype.$http = axios;
+    };
+
+    export default MyHttpServer;
+}
+
+青丘方法  这些没有要qs转
+this.$router.push({ name: "home" });  理由跳转
+结构不太懂
+
+this.formLabelAlign携带的参数
+  methods: {
+    handleLogin() {
+      this.$http.post("login", this.formLabelAlign).then(res => {
+        // console.log(res); //
+
+        const {  //解构
+          data,
+          meta: { msg, status }
+        } = res.data;
+
+        if (status === 200) {
+          this.$router.push({ name: "home" });
+        }
+      });
+    }
+  }
+
+
+  12day  
+  01==》使用 消息提示
+    this.$message("登录成功");  直接使用  注意this
+
+    解构 
+    res.data={"data":null,"meta":{"msg":"密码错误","status":400}}
+
+    如何解构
+     const {  
+          data,
+          meta: { msg, status }
+        } = res.data;
+
+     console.log(msg)    //为密码错误
+
+     
+
+
+
 
