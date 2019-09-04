@@ -30,12 +30,42 @@ git push
 
 在跟目录下  生成git文件
  git init
- git status  查看一下状态  查看那些文件没有被纳入版本控制
+ git status  查看一下状态  查看那些文件没有被纳入版本控制  No commits yet 尚未提交
  git add . 纳入
 git commit -m"注释"
 前4不是本地甘的事情
 
-06 好好看一下
+06 好好看一下  ok
+
+github上的步骤
+
+git init  创建git关联文件
+git status  查看一下状态  查看那些文件没有被纳入版本控制  No commits yet 尚未提交
+git add .   纳入  .前有一个空格
+git commit -m "first commit"  提交前的描述
 
 
+git remote add origin https://github.com/ishouldgodo/heimagunali.git   提交到远程仓库
+这一步可能会放你关联账号  若没有任何提示  说明你关联成功了  或者你以前关联过
+
+git push -u origin master  最后一步  推送到远程仓库
+最后这一步可能  有你输入你的  用户名 和账号  
+ishouldgodo  
+
+出现100%  说明推送成功了
+
+之后再推送直接 git push
+
+
+07day
+查看有哪些分支  git  branch
+默认master分支
+
+创建一个分支 专门写登录功能  分支有开发分支 和生产分支
+git  checkout -b 分支名
+
+此时在看看分支 发现有两个分支了
+
+---------
+@  会指向src文件
 
