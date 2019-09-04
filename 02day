@@ -155,8 +155,11 @@ this.formLabelAlign携带的参数
 
      console.log(msg)    //为密码错误
 
-     
 
 
 
 
+
+将登录分支推送到远程仓库
+先查看 当前有几个分支   git  branch
+将当前功能推送到 分支  git push origin 分支名
