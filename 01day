@@ -1,0 +1,68 @@
+====》vue.20脚手架
+
+cnpm install --global vue-cli 全局安装脚手架
+
+vue init webpack my-project  创建项目
+
+
+   Use ESLint to lint your code? (Y/n)          选择no  它是对你的js代码做检测
+   Set up unit tests (Y/n)    选择no            知否要做单元测试
+   Setup e2e tests with Nightwatch? (Y/n)       n 端对端测试
+
+
+2====>  集成多个ui框架
+
+3====》注册vuex 
+
+
+index.js（路由）
+{
+  export default new Router({
+      routes: [
+         {
+            path: "/login",
+            name: "login",
+            meta: {
+            roles: ["admin", "user"]
+            },
+            component: () => import("../page/login.vue")
+         },
+
+         {
+            path: "/home",
+            name: "home",
+            meta: {
+            roles: ["admin"]
+            },
+            component: () => import("../page/home.vue")
+         },
+
+         {
+            path: "/err",
+            name: "err",
+            meta: {
+                  roles: ["user"]
+            },
+            component: () => import("../page/err.vue")
+         }
+      ]
+  });
+
+}
+
+main.js
+{
+  //假设有两种角色：admin 和 user
+   //从后台获取的用户角色
+   let yonghu = "user";
+   //当进入一个页面是会触发导航守卫 router.beforeEach 事件
+   router.beforeEach((to, from, next) => {
+   if(to.meta.roles.includes(yonghu)){
+      next();
+   }else{
+      return next({ 'path': '/err' })
+   }
+   });
+ 
+
+}

@@ -1,0 +1,41 @@
+
+base   基础配置
+dev    开发路径
+prod   生产
+
+本地服务器在dev.env.js中去配置
+
+.git
+eslint
+
+
+03 文档分析
+DDFE技术文章
+
+
+04下载
+cnpm i  elementui@2.4.11 -S
+
+引入
+
+06==>
+git init -> .git
+git status
+git add .
+git commit -m"注释"
+前4不是本地甘的事情
+
+创建github 
+git push
+
+在跟目录下  生成git文件
+ git init
+ git status  查看一下状态  查看那些文件没有被纳入版本控制
+ git add . 纳入
+git commit -m"注释"
+前4不是本地甘的事情
+
+06 好好看一下
+
+
+
