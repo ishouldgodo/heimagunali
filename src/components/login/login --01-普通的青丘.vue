@@ -31,29 +31,28 @@ export default {
   },
 
   methods: {
-    async handleLogin() {
-      const res = await this.$http.post("login", this.formLabelAlign);
-      console.log(res);
-      const {
-        data,
-        meta: { msg, status }
-      } = res.data;
-      if (status === 200) {
-        this.$message({
-          showClose: true,
-          message: msg,
-          type: "success"
-        });
-
-        localStorage.setItem("token", data.token); //保存token
-        this.$router.push({ name: "home" });
-      } else {
-        this.$message({
-          showClose: true,
-          message: msg,
-          type: "error"
-        });
-      }
+    handleLogin() {
+      this.$http.post("login", this.formLabelAlign).then(res => {
+        // console.log(res);
+        const {
+          data,
+          meta: { msg, status }
+        } = res.data;
+        if (status === 200) {
+          this.$message({
+            showClose: true,
+            message: msg,
+            type: "success"
+          });
+          this.$router.push({ name: "home" });
+        } else {
+          this.$message({
+            showClose: true,
+            message: msg,
+            type: "error"
+          });
+        }
+      });
     }
   }
 };
