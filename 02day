@@ -257,3 +257,21 @@ export default {
 };
 </script>
 
+21day
+左边 如何图片100%显示
+阻止默认事件
+<a v-on:click.prevent="doThat"></a>
+
+22day 22-项目-首页-合并分支-新建用户分支
+git add .
+git commit -m""
+
+
+git checkout master   切换到主分支
+git branch 查看分支状态
+git merge dev-login(分支名)   合并分支
+git push
+
+
+创建另外一个分支
+git checkout -b dev-users
