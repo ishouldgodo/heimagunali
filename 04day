@@ -14,4 +14,179 @@
 
 
  05day
-      
+
+git checkout -b  dev-rights 新建分支
+
+11day  自定义全局组件面包屑  在任何地方都可以使用
+data中数据的值 来源于自己  由自己维护
+所以组件中的值 不能够够写在data中
+组件中的值 要来源于将来我使用的位置
+
+
+1==>写组件
+新建文件夹(cuscom)    文件(myBread.vue)
+在myBread.vue文件如下
+{
+    <template>
+        <el-breadcrumb separator="/">
+            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item>
+            <a href="/">{{value1}}</a>
+            </el-breadcrumb-item>
+            <el-breadcrumb-item>{{value2}}</el-breadcrumb-item>
+        </el-breadcrumb>
+    </template>
+
+    <script>
+        // 自定义组件  面包屑
+        export default {
+        data() {
+            return {};
+        },
+        // props外界来的数据
+        // props值是字符串数组
+        // props中的数据的值，来源于使用组件时 传递的值
+         props: ["value1", "value2"]
+    };
+    </script>
+}
+
+2==>在main.js中导入组件  在main.js 组件 注册
+import MyBread from "@/components/cuscom/myBread.vue";
+Vue.component("my-bread", MyBread); //注册组件
+
+
+在某个文件中使用
+<my-bread value1="权限管理" value2="权限列表"></my-bread>
+
+z组件的名字应该是写组件的人提供的
+将上面的优化一下
+1==》其他不变
+{
+  <script>
+    // 自定义组件  面包屑
+    export default {
+        name: "my-bread", //给组件起一个名字 new add
+        data() {
+            return {};
+        },
+        // props外界来的数据
+        // props值是字符串数组
+        // props中的数据的值，来源于使用组件时 传递的值
+     props: ["value1", "value2"]
+    };
+    </script>
+}
+
+2==>
+// MyBread是一个对象
+import MyBread from "@/components/cuscom/myBread.vue";
+Vue.component(MyBread.name, MyBread); //注册组件
+
+3==>
+  <my-bread value1="权限管理" value2="权限列表"></my-bread>
+
+  13day
+  每一个青丘 都要协泰青丘头 除了登录页面
+  所以优化一下代码
+  http.js文件如下
+  {
+
+        import axios from "axios";
+        const MyHttpServer = {};
+        MyHttpServer.install = Vue => {
+        axios.defaults.baseURL = "http://api.xiaomadagege.cn:8808/api/private/v1/";
+
+        // 添加请求拦截器--new add
+        axios.interceptors.request.use(
+            function(config) {
+            // 在发送请求之前做些什么--判断是否是login的请求
+            // config返回的是一个对象 {url: "rights/list", method: "get", headers: {…}, baseURL: "http://api.xiaomadagege.cn:8808/api/private/v1/", transformRequest: Array(1), …}
+            if (config.url !== "login") {
+                //不是login 清代请求头
+                const AUTH_TOKEN = localStorage.getItem("token");
+                config.headers.common["Authorization"] = AUTH_TOKEN;
+            }
+            return config;
+            },
+            function(error) {
+            // 对请求错误做些什么
+            return Promise.reject(error);
+            }
+        );
+
+        // 添加响应拦截器
+        axios.interceptors.response.use(
+            function(response) {
+            // 对响应数据做点什么
+            return response;
+            },
+            function(error) {
+            // 对响应错误做点什么
+            return Promise.reject(error);
+            }
+        );
+
+        //新增结束
+
+        // 添加实例的方法
+        Vue.prototype.$http = axios;
+        };
+
+        export default MyHttpServer;
+
+  }
+
+  把其他页面的设置青丘头删除了
+
+  15day
+  使用v-if对数据进行判断 tableData也可以改为scope
+
+ <el-table-column prop="address" label="层级">
+        <template slot-scope="tableData">
+          <span v-if="tableData.row.level=='0'">一级</span>
+          <span v-if="tableData.row.level=='1'">二级</span>
+          <span v-if="tableData.row.level=='2'">三级</span>
+        </template>
+ </el-table-column>
+
+ 16day
+ 配置路由守卫
+ const router = new Router({}) //整个实例出来
+
+ router.beforeEach((to, from, next) => {
+  if (to.path == "/login") {
+    next();
+  } else {
+    const token = localStorage.getItem("token");
+    if (token) {
+      next();
+    } else {
+      router.push({
+        name: "login"
+      });
+    }
+  }
+});
+
+另外一种 增加一个消失提示
+import { Message } from "element-ui"; //引入消失提示
+
+
+router.beforeEach((to, from, next) => {
+  if (to.path == "/login") {
+    next();
+  } else {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      Message.success("回到登录页"); //消息提示
+      // 没有token
+      router.push({
+        name: "login"
+      });
+      return false;
+    } else {
+      next();
+    }
+  }
+});

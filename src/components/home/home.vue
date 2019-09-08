@@ -57,11 +57,11 @@
                 <el-submenu index="2">
                   <template slot="title">
                     <i class="el-icon-location"></i>
-                    <span>导航二</span>
+                    <span>权限</span>
                   </template>
 
                   <el-menu-item-group>
-                    <el-menu-item index="2-1">选项1</el-menu-item>
+                    <el-menu-item index="rights">权限</el-menu-item>
                     <el-menu-item index="2-2">选项2</el-menu-item>
                   </el-menu-item-group>
 

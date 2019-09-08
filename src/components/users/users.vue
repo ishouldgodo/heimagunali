@@ -89,10 +89,6 @@ export default {
   methods: {
     async getUserlist() {
       // 需要授权的Api，必须在青丘头中使用Authorization 字段提供token令牌 Authorization orders
-      const aa = localStorage.getItem("token");
-
-      this.$http.defaults.headers.common["Authorization"] = aa;
-
       const res = await this.$http.get(
         `orders?query=${this.query}&pagenum=${this.pagenum}&pagesize=${this.pagesize}`
       );

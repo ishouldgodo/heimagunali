@@ -4,13 +4,16 @@ import Vue from "vue";
 import App from "./App";
 import router from "./router";
 
+// 导入自定义组件
+// MyBread是一个对象
+import MyBread from "@/components/cuscom/myBread.vue";
+
 Vue.config.productionTip = false;
 
 // 过滤器
-Vue.filter("fmtdata",(v)=>{
-  return moment(v).format("YYYY-MM-DD")
-})
-
+Vue.filter("fmtdata", v => {
+  return moment(v).format("YYYY-MM-DD");
+});
 
 //
 import ElementUI from "element-ui";
@@ -21,6 +24,8 @@ Vue.use(ElementUI);
 import MyServerHttp from "@/plugins/http.js";
 import moment from "_moment@2.24.0@moment";
 Vue.use(MyServerHttp);
+
+Vue.component(MyBread.name, MyBread); //注册组件
 
 /* eslint-disable no-new */
 new Vue({
