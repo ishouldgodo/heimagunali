@@ -26,7 +26,7 @@
     </el-row>
 
     <!-- 表格 -->
-    <el-table :data="tableData" style="width: 100%" height="400px">
+    <el-table :data="tableData" style="width: 100%" height="0">
       <el-table-column type="index" prop="date" label="#" width="180"></el-table-column>
 
       <el-table-column prop="name" label="姓名" width="180"></el-table-column>
@@ -41,12 +41,7 @@
 
       <el-table-column label="用户状态" width="180">
         <template slot-scope="tableData">
-          <el-switch
-            @change="getstate()"
-            v-model="tableData.row.kg"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-          ></el-switch>
+          <el-switch v-model="tableData.row.kg" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
         </template>
       </el-table-column>
 
@@ -132,13 +127,12 @@ export default {
             message: "已取消删除"
           });
         });
-    },
+    }
 
     //改变状态
-    getstate() {
-      console.log("状态改变了");
-      alert("假装改变了");
-    }
+    // getstate() {
+    //   console.log("状态改变了");
+    // }
   }
 };
 </script>

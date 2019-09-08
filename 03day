@@ -27,10 +27,10 @@ el-card用来作为一个铺满的容器
  <el-row> <el-col> 是一行中有一列 new  你以前只晓得div
 
 
-   <!-- 搜索 添加 -->
+   <!-- 搜索 添加 clearable输入内容后可以清空-->
     <el-row class="sousuo">
       <el-col>
-        <el-input placeholder="请输入内容" v-model="searchvalue" class="input-with-select">
+        <el-input placeholder="请输入内容" v-model="searchvalue" class="input-with-select" clearable>
           <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
         <el-button type="primary">添加</el-button>
@@ -103,5 +103,53 @@ users.vue文件
 
 </el-table>
 注意tableData是:data="tableData"绑定的额  slot-scope="tableData"  create_time是字段  fmtdata你全局注册的过滤器
+删除 prop=""属性
+
+07day
+删除 prop=""属性;  aa字段是true或者为fasle
+
+用户状态的开关
+<el-table-column label="用户状态" width="180">
+        <template slot-scope="tableData">
+          <el-switch v-model="tableData.row.kg" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+        </template>
+</el-table-column>
 
 
+// 组装数据
+
+kaiguan: [true, true, false, true, true, false, true, true, false, false]
+
+for (var i = 0; i < this.tableData.length; i++) {
+// 给数组添加一个属性和属性值
+this.tableData[i]["kg"] = this.kaiguan[i];
+}
+
+
+08day
+按钮样式的调整  size="small"表示按钮的大小  plain最初暗淡 hover时颜色加深
+
+   <el-table-column  label="操作">
+        <template slot-scope="tableData">
+          <el-button type="primary" size="small" plain icon="el-icon-edit" circle></el-button>
+          <el-button type="success" size="small" plain icon="el-icon-check" circle></el-button>
+          <el-button type="danger" size="small" plain icon="el-icon-delete" circle></el-button>
+        </template>
+      </el-table-column>
+
+09day  分页 以后看
+10day分页   以后看
+11day分页   以后看
+
+12day
+  @clear="loadUserlist" 当你点击X小图标时，就会触发
+
+  13day
+  点击添加  弹出对应的对话框（未做）
+  14daay   15day
+  16day   删除的提示框用的是 （MessageBox 弹框）--》（确认消息）
+
+  19day
+  当你发现表格区域的内容不够用的时候，你可以给表格一个固定的高度（重要）
+   <el-table :data="tableData" style="width: 100%" height="400px">
+   此地超出就会显示 滚动条
