@@ -12,10 +12,18 @@ export default new Router({
       name: "login",
       component: () => import("../components/login/login.vue")
     },
+
     {
       path: "/home",
       name: "home",
-      component: () => import("../page/home/home.vue")
+      component: () => import("../components/home/home.vue"),
+      children: [
+        {
+          path: "/users",
+          name: "users",
+          component: () => import("../components/users/users.vue")
+        }
+      ]
     }
   ]
 });

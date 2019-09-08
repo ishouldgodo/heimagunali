@@ -24,9 +24,13 @@
           <!--  -->
           <el-row class="tac mytac">
             <el-col :span="24">
-              <!-- unique-opened="true" 只保留一个菜单  -->
+              <!-- unique-opened="true" 只保留一个菜单
+                    :router="true"开启路由标识
+                    index="users" 是标识 它就会去找这个路由
+              -->
               <el-menu
                 default-active="2"
+                :router="true"
                 :unique-opened="true"
                 class="el-menu-vertical-demo"
                 @open="handleOpen"
@@ -38,10 +42,10 @@
                 <el-submenu index="1">
                   <template slot="title">
                     <i class="el-icon-location"></i>
-                    <span>导航一</span>
+                    <span>用户管理</span>
                   </template>
                   <el-menu-item-group>
-                    <el-menu-item index="1-1">选项1</el-menu-item>
+                    <el-menu-item index="users">用户列表</el-menu-item>
                     <el-menu-item index="1-2">选项2</el-menu-item>
                   </el-menu-item-group>
                   <el-submenu index="1-3">
@@ -89,7 +93,10 @@
           <!--  -->
         </el-aside>
         <el-container>
-          <el-main>Main</el-main>
+          <el-main>
+            <!-- 中间部分的容器 -->
+            <router-view></router-view>
+          </el-main>
           <el-footer>Footer</el-footer>
         </el-container>
       </el-container>
