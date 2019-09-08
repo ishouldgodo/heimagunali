@@ -271,7 +271,7 @@ git checkout master   切换到主分支
 git branch 查看分支状态
 git merge dev-login(分支名)   合并分支
 git push
-
+1
 
 创建另外一个分支
 git checkout -b dev-users

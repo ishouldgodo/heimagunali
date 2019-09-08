@@ -1,4 +1,4 @@
-04day==>
+04day==>ishouldgodo ishouldgodo
 03==>改变开关的状态     @change="getstate()"
 
  <el-table-column label="用户状态" width="180">
