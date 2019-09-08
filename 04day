@@ -190,3 +190,29 @@ router.beforeEach((to, from, next) => {
     }
   }
 });
+
+16day 16-项目-权限管理-权限列表-表格展示-固定表头 ok
+
+17day 17-项目-权限管理-角色列表-新建组件-配置路由  ok
+
+18-项目-权限管理-角色列表-面包屑和添加按钮
+<template>
+  <div>
+
+    <!-- 面包写 之前封装成了组件  直接用就好了 -->
+    <my-bread value1="权限管理" value2="角色列表"></my-bread>
+
+    <!-- 添加按钮 -->
+    <el-row>
+      <el-col>
+        <el-button type="primary">添加角色</el-button>
+      </el-col>
+    </el-row>
+  </div>
+</template>
+
+
+
+19-项目-权限管理-角色列表-获取角色列表数据  ok
+20-项目-权限管理-角色列表-表格展示  ok
+21day 21-项目-权限管理-角色列表-表格展示-展开行功能分析

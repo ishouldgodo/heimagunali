@@ -39,53 +39,19 @@
                 text-color="#fff"
                 active-text-color="#ffd04b"
               >
-                <el-submenu index="1">
+                <el-submenu :index="''+item.order" v-for="(item,i) in menutable" :key="i">
                   <template slot="title">
                     <i class="el-icon-location"></i>
-                    <span>用户管理</span>
-                  </template>
-                  <el-menu-item-group>
-                    <el-menu-item index="users">用户列表</el-menu-item>
-                    <el-menu-item index="1-2">选项2</el-menu-item>
-                  </el-menu-item-group>
-                  <el-submenu index="1-3">
-                    <template slot="title">选项4</template>
-                    <el-menu-item index="1-3-1">选项1</el-menu-item>
-                  </el-submenu>
-                </el-submenu>
-
-                <el-submenu index="2">
-                  <template slot="title">
-                    <i class="el-icon-location"></i>
-                    <span>权限管理</span>
+                    <span>{{item.authName}}</span>
                   </template>
 
                   <el-menu-item-group>
-                    <el-menu-item index="rights">角色列表</el-menu-item>
-                    <el-menu-item index="role">权限管理</el-menu-item>
+                    <el-menu-item
+                      :index="item2.path"
+                      v-for="(item2,j) in item.children"
+                      :key="j"
+                    >{{item2.authName}}</el-menu-item>
                   </el-menu-item-group>
-
-                  <el-submenu index="2-3">
-                    <template slot="title">选项4</template>
-                    <el-menu-item index="2-3-1">选项1</el-menu-item>
-                  </el-submenu>
-                </el-submenu>
-
-                <el-submenu index="3">
-                  <template slot="title">
-                    <i class="el-icon-location"></i>
-                    <span>导航三</span>
-                  </template>
-
-                  <el-menu-item-group>
-                    <el-menu-item index="3-1">选项1</el-menu-item>
-                    <el-menu-item index="3-2">选项2</el-menu-item>
-                  </el-menu-item-group>
-
-                  <el-submenu index="3-3">
-                    <template slot="title">选项4</template>
-                    <el-menu-item index="3-3-1">选项1</el-menu-item>
-                  </el-submenu>
                 </el-submenu>
               </el-menu>
             </el-col>
@@ -108,7 +74,9 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      menutable: []
+    };
   },
   // beforeCreate() {
   //   //发送青丘前
@@ -146,7 +114,7 @@ export default {
     //
     async getmenus() {
       const res = await this.$http.get(`menus`);
-      console.log("123", res);
+      this.menutable = res.data.data;
     }
   }
 };
