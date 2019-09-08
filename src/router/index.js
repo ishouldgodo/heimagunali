@@ -3,8 +3,7 @@ import Router from "vue-router";
 
 Vue.use(Router);
 import { Message } from "element-ui";
-// router.js
-// 路由表元信息
+
 const router = new Router({
   routes: [
     {
