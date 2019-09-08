@@ -1,0 +1,60 @@
+
+
+14day 动态修改左侧的路由
+
+  <!-- 菜单 -->
+          <el-row class="tac mytac">
+            <el-col :span="24">
+              <!-- unique-opened="true" 只保留一个菜单
+                    :router="true"开启路由标识
+                    index="users" 是标识 它就会去找这个路由
+                    :index的值是一个字符串 :index="''+item.order" 这里使用了字符串拼接  注意使用v-bind
+                    :index="item2.path" 动态绑定路径
+              -->
+              <el-menu
+                default-active="2"
+                :router="true"
+                :unique-opened="true"
+                class="el-menu-vertical-demo"
+                @open="handleOpen"
+                @close="handleClose"
+                background-color="#d3dce6"
+                text-color="#fff"
+                active-text-color="#ffd04b"
+              >
+                <el-submenu :index="''+item.order" v-for="(item,i) in menutable" :key="i">
+                  <template slot="title">
+                    <i class="el-icon-location"></i>
+                    <span>{{item.authName}}</span>
+                  </template>
+
+                  <el-menu-item-group>
+                    <el-menu-item
+                      :index="item2.path"
+                      v-for="(item2,j) in item.children"
+                      :key="j"
+                    >{{item2.authName}}</el-menu-item>
+                  </el-menu-item-group>
+
+           
+                </el-submenu>
+              </el-menu>
+            </el-col>
+          </el-row>
+          <!--  -->
+
+
+    created() {
+        this.getmenus();
+    },
+
+    async getmenus() {
+      const res = await this.$http.get(`menus`);
+      this.menutable = res.data.data;
+    }
+
+    这样 前端在登录的时候将token 存进localStroage中
+    用户登录时使用不同的名称  后盾首页就会展示不同的效果
+    这样可以实现 不同身份看见不同菜单的效果
+
+    15day==>
