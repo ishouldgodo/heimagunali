@@ -97,6 +97,7 @@
             <!-- 中间部分的容器 -->
             <router-view></router-view>
           </el-main>
+
           <el-footer>Footer</el-footer>
         </el-container>
       </el-container>
@@ -169,11 +170,12 @@ export default {
   line-height: 200px;
 }
 
+/* 中间容器注意样似 */
 .el-main {
   background-color: #e9eef3;
   color: #333;
-  text-align: center;
-  line-height: 160px;
+  /* text-align: center; */
+  /* line-height: 160px; */
 }
 /*护甲结束*/
 
