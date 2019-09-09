@@ -216,3 +216,51 @@ router.beforeEach((to, from, next) => {
 19-项目-权限管理-角色列表-获取角色列表数据  ok
 20-项目-权限管理-角色列表-表格展示  ok
 21day 21-项目-权限管理-角色列表-表格展示-展开行功能分析
+
+  <!-- 表格 最初的墨阳  使用的是展开行（展开行） -->
+ <el-table :data="tableData" style="width: 100%">
+      <el-table-column type="expand">
+        <template slot-scope="props">
+
+
+        </template>
+      </el-table-column>
+
+      <el-table-column label="商品 ID" prop="id"></el-table-column>
+      <el-table-column label="商品名称" prop="name"></el-table-column>
+      <el-table-column label="描述" prop="desc"></el-table-column>
+    </el-table>
+
+
+渲染一行中最左边的数据
+ <!-- 表格 -->
+    <el-table :data="tableData" style="width: 100%">
+      <el-table-column type="expand">
+        <template slot-scope="tableData">
+          <!-- 展开行的内容 注意下面 tableData.row.children它是一个数组  item.authName是最左边的数据-->
+          <el-row v-for="(item,i) in tableData.row.children" :key="i">
+            
+            <el-col :span="4"> 
+              <el-tag>{{item.authName}}</el-tag>
+            </el-col>
+
+            <el-col :span="20">
+              <el-row>
+                <el-col :span="4"></el-col>
+                <el-col :span="20"></el-col>
+              </el-row>
+            </el-col>
+          </el-row>
+
+          <!-- 展开行的内容 end -->
+        </template>
+      </el-table-column>
+
+      <el-table-column label="#" prop="id" type="index"></el-table-column>
+      <el-table-column label="角色名称" prop="roleName"></el-table-column>
+      <el-table-column label="角色描述" prop="roleDesc"></el-table-column>
+      <el-table-column label="操作" prop="desc"></el-table-column>
+    </el-table>
+
+
+

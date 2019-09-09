@@ -9,13 +9,43 @@
         <el-button type="primary">添加角色</el-button>
       </el-col>
     </el-row>
+
+    <!-- 表格 -->
+    <el-table :data="tableData" style="width: 100%">
+      <el-table-column type="expand">
+        <template slot-scope="tableData">
+          <!-- 展开行的内容 -->
+          <el-row v-for="(item,i) in tableData.row.children" :key="i">
+            <el-col :span="4">
+              <el-tag>{{item.authName}}</el-tag>
+            </el-col>
+
+            <el-col :span="20">
+              <el-row>
+                <el-col :span="4"></el-col>
+                <el-col :span="20"></el-col>
+              </el-row>
+            </el-col>
+          </el-row>
+
+          <!-- 展开行的内容 end -->
+        </template>
+      </el-table-column>
+
+      <el-table-column label="#" prop="id" type="index"></el-table-column>
+      <el-table-column label="角色名称" prop="roleName"></el-table-column>
+      <el-table-column label="角色描述" prop="roleDesc"></el-table-column>
+      <el-table-column label="操作" prop="desc"></el-table-column>
+    </el-table>
   </div>
 </template>
 
 <script>
 export default {
   data() {
-    return {};
+    return {
+      tableData: []
+    };
   },
 
   created() {
@@ -25,7 +55,8 @@ export default {
   methods: {
     async getRolelist() {
       const res = await this.$http.get(`roles`);
-      console.log("aa", res);
+      this.tableData = res.data.data;
+      console.log(res);
     }
   }
 };
