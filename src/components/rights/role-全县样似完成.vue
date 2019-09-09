@@ -18,31 +18,22 @@
           <el-row v-for="(item,i) in tableData.row.children" :key="i">
             <el-col :span="4">
               <!-- 删除 -->
-              <!-- 权限idtableData.row.id,     获取角色的id item.id-->
-              <el-tag
-                @close="delrights(tableData.row.id, item.id)"
-                type="success"
-                closable
-              >{{item.authName}}</el-tag>
+              <el-tag @close="delrights()" type="success" closable>{{item.authName}}</el-tag>
               <i class="el-icon-arrow-right"></i>
             </el-col>
 
             <el-col :span="20">
+              <!-- 二级权限渲染 -->
               <el-row v-for="(item2,j) in item.children" :key="j">
                 <el-col :span="4">
-                  <!-- 二级权限渲染  -->
-                  <el-tag
-                    @close="delrights(tableData.row.id, item2.id)"
-                    type="info"
-                    closable
-                  >{{item2.authName}}</el-tag>
+                  <el-tag @close="delrights()" type="info" closable>{{item2.authName}}</el-tag>
                   <i class="el-icon-arrow-right"></i>
                 </el-col>
                 <el-col :span="20">
                   <!-- 三级权限 -->
                   <el-tag
                     closable
-                    @close="delrights(tableData.row.id, item3.id)"
+                    @close="delrights()"
                     type="warning"
                     v-for="(item3,k) in item2.children"
                     :key="k"
@@ -87,12 +78,7 @@ export default {
     },
 
     // 删除权限
-    async delrights(roleid, rightid) {
-      const res = await this.$http.delete(`roles/${roleid}/rights/${rightid}`);
-      console.log("del青丘删除公共", res);
-
-      this.getRolelist(); //成功之后再次调用
-    }
+    delrights() {}
   }
 };
 </script>

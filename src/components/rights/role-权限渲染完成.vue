@@ -17,43 +17,22 @@
           <!-- 展开行的内容  以及权限的渲染-->
           <el-row v-for="(item,i) in tableData.row.children" :key="i">
             <el-col :span="4">
-              <!-- 删除 -->
-              <!-- 权限idtableData.row.id,     获取角色的id item.id-->
-              <el-tag
-                @close="delrights(tableData.row.id, item.id)"
-                type="success"
-                closable
-              >{{item.authName}}</el-tag>
-              <i class="el-icon-arrow-right"></i>
+              <el-tag>{{item.authName}}</el-tag>
             </el-col>
 
             <el-col :span="20">
+              <!-- 二级权限渲染 -->
               <el-row v-for="(item2,j) in item.children" :key="j">
                 <el-col :span="4">
-                  <!-- 二级权限渲染  -->
-                  <el-tag
-                    @close="delrights(tableData.row.id, item2.id)"
-                    type="info"
-                    closable
-                  >{{item2.authName}}</el-tag>
-                  <i class="el-icon-arrow-right"></i>
+                  <el-tag>{{item2.authName}}</el-tag>
                 </el-col>
                 <el-col :span="20">
                   <!-- 三级权限 -->
-                  <el-tag
-                    closable
-                    @close="delrights(tableData.row.id, item3.id)"
-                    type="warning"
-                    v-for="(item3,k) in item2.children"
-                    :key="k"
-                  >{{item3.authName}}</el-tag>
+                  <el-tag v-for="(item3,k) in item2.children" :key="k">{{item3.authName}}</el-tag>
                 </el-col>
               </el-row>
             </el-col>
           </el-row>
-
-          <!-- 无权限提示 -->
-          <span v-if="tableData.row.children.length==0">未分配权限</span>
 
           <!-- 展开行的内容 end -->
         </template>
@@ -84,14 +63,6 @@ export default {
       const res = await this.$http.get(`roles`);
       this.tableData = res.data.data;
       console.log(res);
-    },
-
-    // 删除权限
-    async delrights(roleid, rightid) {
-      const res = await this.$http.delete(`roles/${roleid}/rights/${rightid}`);
-      console.log("del青丘删除公共", res);
-
-      this.getRolelist(); //成功之后再次调用
     }
   }
 };
