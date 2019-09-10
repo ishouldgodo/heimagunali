@@ -62,8 +62,49 @@
       <el-table-column label="#" prop="id" type="index"></el-table-column>
       <el-table-column label="角色名称" prop="roleName"></el-table-column>
       <el-table-column label="角色描述" prop="roleDesc"></el-table-column>
-      <el-table-column label="操作" prop="desc"></el-table-column>
+      <el-table-column label="操作" prop="desc">
+        <template :slot-scope="tableData">
+          <el-button type="primary" size="small" plain icon="el-icon-edit" circle></el-button>
+          <el-button type="danger" size="small" plain icon="el-icon-delete" circle></el-button>
+          <el-button
+            type="success"
+            size="small"
+            plain
+            icon="el-icon-check"
+            circle
+            @click="showSetRight(tableData.row)"
+          ></el-button>
+        </template>
+      </el-table-column>
     </el-table>
+
+    <!-- 对话框 -->
+    <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
+      <!-- 内容区域 -->
+      <!-- 树形结构的分析
+        data2是数据源  是一个数组
+        show-checkbox是一个选择框
+        node-key="id" 每个节点的每一值  通常是data数据源中的key名id
+        :default-expanded-keys="[2, 3]" 默认要展开的节点的id值
+          
+        :default-checked-keys="[5]"
+         :default-expanded-keys="arrexpand"   default-expand-all默认展开所有节点 将:default-expanded-keys="[2, 3]"删除
+
+      -->
+      <el-tree
+        :default-expanded-keys="arrexpand"
+        :data="data2"
+        show-checkbox
+        node-key="id"
+        :props="defaultProps"
+      ></el-tree>
+
+      <!-- 结束 -->
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -71,7 +112,15 @@
 export default {
   data() {
     return {
-      tableData: []
+      tableData: [],
+      dialogFormVisible: false, //默认隐藏对话框
+      data2: [], //树形结构的数据
+      arrexpand: [], //要展开的节点的id
+      defaultProps: {
+        children: "children", //描述的是该节点 的容器数组（一级节点 下所有的节点）
+        label: "authName" //label的值是文字描述  label的值 应该去数据源data2中去找
+        // label 的值表现的是该节点的文字描述  第一级节点
+      }
     };
   },
 
@@ -90,8 +139,34 @@ export default {
     async delrights(roleid, rightid) {
       const res = await this.$http.delete(`roles/${roleid}/rights/${rightid}`);
       console.log("del青丘删除公共", res);
-
       this.getRolelist(); //成功之后再次调用
+    },
+
+    // 修改 分配 权限
+    async showSetRight() {
+      const res = await this.$http.get(`rights/tree`);
+      console.log("点我了", res);
+      this.data2 = res.data.data;
+      var arrtemp1 = [];
+
+      // 获取所有展开节点的id值  其实你也可以使用 elementui的默认值
+      // default-expand-all	是否默认展开所有节点  true全部展开
+
+      this.data2.forEach(item1 => {
+        arrtemp1.push(item1.id); //拿到一层的id
+        item1.children.forEach(item2 => {
+          //循环的仍然是数组  拿到第二层的id
+          arrtemp1.push(item2.id);
+          item2.children.forEach(item3 => {
+            arrtemp1.push(item3.id);
+          });
+        });
+      });
+
+      this.arrexpand = arrtemp1;
+
+      // 点击弹出对话框
+      this.dialogFormVisible = true;
     }
   }
 };

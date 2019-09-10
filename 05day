@@ -98,6 +98,157 @@ del请求
 
 
 06day
+点击哪一个  哪一个就删除   没有必要实现 视图的全部跟新
+
+删除id
+
+
+07day 
+1==》写操作下面的三个图标，要使用模板   :slot-scope="tableData"添加“:”后不会报错
+
+  <el-table-column label="操作" prop="desc">
+        <template :slot-scope="tableData">
+          <el-button type="primary" size="small" plain icon="el-icon-edit" circle></el-button>
+          <el-button type="danger" size="small" plain icon="el-icon-delete" circle></el-button>
+          <el-button
+            type="success"
+            size="small"
+            plain
+            icon="el-icon-check"
+            circle
+            @click="showSetRight(tableData.row)"
+          ></el-button>
+        </template>
+      </el-table-column>
+
+   // 修改 分配 权限 
+    showSetRight() {
+      console.log("点我了");
+    }
+
+ 点击勾勾按钮  显示出对话框
+ 使用了对话框中 中的   自定义内容
+
+ <!-- 对话框 -->
+    <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
+      <!-- 内容区域 -->
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
+
+ dialogFormVisible: false //默认隐藏对话框
+
+  // 修改 分配 权限
+  showSetRight() {
+    console.log("点我了");
+    // 点击弹出对话框
+    this.dialogFormVisible = true;
+  }
+
+   
+   08day  树结构   默认展开和默认选中
+
+
+   09day
+   如何后端给的青丘路径是这样的
+   rights/:type 
+   请求方式get
+   你如何写get青丘
+
+    async showSetRight() {
+      const res = await this.$http.get(`rights/tree`);
+      console.log("点我了", res);
+      this.data2 = res.data.data;
+      // 点击弹出对话框
+      this.dialogFormVisible = true;
+    }
+   
+  
+  02==》渲染树形结构
+
+  <!-- 内容区域 -->
+      <!-- 树形结构的分析
+        data2是数据源  是一个数组
+        show-checkbox是一个选择框
+        node-key="id" 每个节点的每一值  通常是data数据源中的key名id
+        :default-expanded-keys="[2, 3]" 默认要展开的节点
+           :default-expanded-keys="[2, 3]"
+        :default-checked-keys="[5]"
+
+      -->
+      <el-tree :data="data2" show-checkbox node-key="id" :props="defaultProps"></el-tree>
+     
+
+ 
+      data2: [], //树形结构的数据
+      defaultProps: { 
+        children: "children",  //描述的是该节点 的容器数组（一级节点 下所有的节点）
+        label: "authName" //label的值是文字描述  label的值 应该去数据源data2中去找 
+        // label 的值表现的是该节点的文字描述  第一级节点 
+      }
+      
+
+      // 修改 分配 权限
+      async showSetRight() {
+        const res = await this.$http.get(`rights/tree`);
+        this.data2 = res.data.data;
+      }
+      
+
+10day 展开所有的节点
+可以使用 自带属性    default-expand-all默认展开所有的节点（推荐）
+
+或者将所有要展开的id值获取出来
+
+    <el-tree
+        :default-expanded-keys="arrexpand" //所有要展开的id值
+        :data="data2"
+        show-checkbox
+        node-key="id"
+        :props="defaultProps"
+      ></el-tree>
+
+
+     data2: [], //树形结构的数据
+     arrexpand: [], //要展开的节点的id
+     defaultProps: {
+        children: "children", //描述的是该节点 的容器数组（一级节点 下所有的节点）
+        label: "authName" //label的值是文字描述  label的值 应该去数据源data2中去找
+        // label 的值表现的是该节点的文字描述  第一级节点
+      }
+
+
+     // 修改 分配 权限
+    async showSetRight() {
+      const res = await this.$http.get(`rights/tree`);
+      console.log("点我了", res);
+      this.data2 = res.data.data;
+      var arrtemp1 = [];
+
+      // 获取所有展开节点的id值  其实你也可以使用 elementui的默认值
+      // default-expand-all	是否默认展开所有节点  true全部展开
+
+      this.data2.forEach(item1 => {
+        arrtemp1.push(item1.id); //拿到一层的id
+        item1.children.forEach(item2 => {
+          //循环的仍然是数组  拿到第二层的id
+          arrtemp1.push(item2.id);
+          item2.children.forEach(item3 => {
+            arrtemp1.push(item3.id);
+          });
+        });
+      });
+
+      this.arrexpand = arrtemp1;
+
+      // 点击弹出对话框
+      this.dialogFormVisible = true;
+    }
+
+  11day 未看
+
 
 
      
