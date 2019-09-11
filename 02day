@@ -1,9 +1,10 @@
 
-base   基础配置
-dev    开发路径
-prod   生产
+webpack.base.conf  基础配置
+ webpack.dev.conf   开发路径
+ webpack.prod.conf  生产
 
 本地服务器在dev.env.js中去配置
+生产服务器 在prod.env.js中服务
 
 .git
 eslint
@@ -18,32 +19,18 @@ cnpm i  elementui@2.4.11 -S
 
 引入
 
-06==>
-git init -> .git
-git status
-git add .
-git commit -m"注释"
-前4不是本地甘的事情
+06==>git的基本命令 ok
+创建github 项目名  赋值项目的地址
 
-创建github 
-git push
 
-在跟目录下  生成git文件
- git init
- git status  查看一下状态  查看那些文件没有被纳入版本控制  No commits yet 尚未提交
- git add . 纳入
-git commit -m"注释"
-前4不是本地甘的事情
+在跟目录下     生成git文件
+ git init     创建git关联文件
+ git status   查看一下状态  查看那些文件没有被纳入版本控制(此时出现绿色的加号）    No commits yet 尚未提交
+ git add .    纳入    .前有一个空格
+ git commit -m"注释"
+前4步是本地做的事情
 
 06 好好看一下  ok
-
-github上的步骤
-
-git init  创建git关联文件
-git status  查看一下状态  查看那些文件没有被纳入版本控制  No commits yet 尚未提交
-git add .   纳入  .前有一个空格
-git commit -m "first commit"  提交前的描述
-
 
 git remote add origin https://github.com/ishouldgodo/heimagunali.git   提交到远程仓库
 这一步可能会放你关联账号  若没有任何提示  说明你关联成功了  或者你以前关联过
@@ -51,7 +38,6 @@ git remote add origin https://github.com/ishouldgodo/heimagunali.git   提交到
 git push -u origin master  最后一步  推送到远程仓库
 最后这一步可能  有你输入你的  用户名 和账号  
 ishouldgodo  
-
 出现100%  说明推送成功了
 
 之后再推送直接 git push

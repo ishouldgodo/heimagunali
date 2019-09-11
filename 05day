@@ -3,7 +3,15 @@
  <el-table-column type="expand"> 
  表格有  type="expand"表示点击的时候可以展开
 
- 02day 权限渲染
+
+ 02day 需求:表格展开行 三级权限渲染
+ 注意点  表格展开行自带  <template slot-scope="tableData"> 所以你等会要过滤数据要注意
+
+ 分析：三级权限渲染被分成了 一行两列
+ 最左边的那一列  是最大的权限
+ 最右边的那一列 又被嵌套了一行两列
+
+
     <!-- 表格 -->
     <el-table :data="tableData" style="width: 100%">
       <el-table-column type="expand">
@@ -61,49 +69,55 @@ export default {
 };
 
 
-ps==>
- <el-tag>是用的标记
-
-
-03day 03-项目-权限管理-角色列表-表格展示-展开行-样式调整
+03day项目-权限管理-角色列表-表格展示-展开行-样式调整
+<el-tag>是用的标记
 
 标记的类型
 <el-tag type="success">{{item.authName}}</el-tag>  
 
-可以移除的标记
+可以移除的标记(带有一个小叉叉)
 <el-tag type="info" closable>{{item2.authName}}</el-tag>
 
- <i class="el-icon-arrow-right"></i> 添加图标
+<i class="el-icon-arrow-right"></i> 添加字体图标标记 是>这个符号
 
 
 
 04-项目-权限管理-角色列表-表格展示-展开行-处理无权限的展示
   <!-- 无权限提示 -->
    <span v-if="tableData.row.children.length==0">未分配权限</span>
+   所以把上面这一行代码放在<el-row></el-row> 展开行的内容 下面
 
 
-05day
+
+05day-项目-权限管理-角色列表-表格展示-展开行-取消权限 
+请求roles/:roleld/rights/:rightld
+deleteq请求
+:roleld是角色id   不能够为空 携带在url中
+:rightld权限id    不能够为空 携带在url中
+
+根据id取消权限
+1==》动态传参  tableData.row.id是角色id          item.id是权限id
  @close="delrights(tableData.row.id, item.id)" //一级页面动态传参
  @close="delrights(tableData.row.id, item2.id)" //二级页面动态传参
  @close="delrights(tableData.row.id, item3.id)" //三级页面动态传参
 
-del请求
 
-    // 删除权限
-    async delrights(roleid, rightid) {
-      const res = await this.$http.delete(`roles/${roleid}/rights/${rightid}`);
-      console.log("del青丘删除公共", res);
-      this.getRolelist(); //成功之后再次调用
-    }
+2==》取消权限的函数
+  // 删除权限
+  async delrights(roleid, rightid) {
+    const res = await this.$http.delete(`roles/${roleid}/rights/${rightid}`);
+    this.getRolelist(); //成功之后再次调用
+  }, 
 
 
-06day
+
+06day（未看）
 点击哪一个  哪一个就删除   没有必要实现 视图的全部跟新
 
 删除id
 
 
-07day 
+07day 需求  写操作下面的三个图标，要使用模板 并且给勾勾按钮添加事件
 1==》写操作下面的三个图标，要使用模板   :slot-scope="tableData"添加“:”后不会报错
 
   <el-table-column label="操作" prop="desc">
@@ -126,12 +140,13 @@ del请求
       console.log("点我了");
     }
 
- 点击勾勾按钮  显示出对话框
- 使用了对话框中 中的   自定义内容
+ 需求：点击勾勾按钮  显示出对话框    使用了对话框中 中的   自定义内容
 
  <!-- 对话框 -->
     <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
       <!-- 内容区域 -->
+
+       <!-- 内容区域end -->
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
@@ -148,11 +163,10 @@ del请求
   }
 
    
-   08day  树结构   默认展开和默认选中
+08day  树结构   默认展开和默认选中文档介绍
 
-
-   09day
-   如何后端给的青丘路径是这样的
+09day
+   如何后端给的请求路径是这样的
    rights/:type 
    请求方式get
    你如何写get青丘
@@ -166,27 +180,23 @@ del请求
     }
    
   
-  02==》渲染树形结构
+  02==》需求:渲染树形结构  主要是data2中的数据结构很重要  html只有一行
 
-  <!-- 内容区域 -->
+      <!-- 内容区域 -->
       <!-- 树形结构的分析
         data2是数据源  是一个数组
         show-checkbox是一个选择框
         node-key="id" 每个节点的每一值  通常是data数据源中的key名id
-        :default-expanded-keys="[2, 3]" 默认要展开的节点
-           :default-expanded-keys="[2, 3]"
+        :default-expanded-keys="[2, 3]" 默认要展开的节点的id
         :default-checked-keys="[5]"
-
       -->
-      <el-tree :data="data2" show-checkbox node-key="id" :props="defaultProps"></el-tree>
-     
 
+      <el-tree :data="data2" show-checkbox node-key="id" :props="defaultProps"></el-tree>
  
       data2: [], //树形结构的数据
       defaultProps: { 
-        children: "children",  //描述的是该节点 的容器数组（一级节点 下所有的节点）
-        label: "authName" //label的值是文字描述  label的值 应该去数据源data2中去找 
-        // label 的值表现的是该节点的文字描述  第一级节点 
+        children: "children",  //描述的是（一级节点 下所有的节点）   值应该去数据源data2中去找
+        label: "authName" //label的值是文字描述  label的值 应该去数据源data2中去找   label 的值表现的是一级节点的文字描述
       }
       
 
@@ -197,10 +207,8 @@ del请求
       }
       
 
-10day 展开所有的节点
+10day需求：默认展开展开所有的节点
 可以使用 自带属性    default-expand-all默认展开所有的节点（推荐）
-
-或者将所有要展开的id值获取出来
 
     <el-tree
         :default-expanded-keys="arrexpand" //所有要展开的id值
@@ -247,13 +255,134 @@ del请求
       this.dialogFormVisible = true;
     }
 
-  11day 未看
+11day:显示该角色拥有的权限
+需求 点击操作中的勾勾按钮  弹出对话框  显示这个角色拥有的权限（拥有某某权限打钩） 
+
+获取到当前角色的权限(通过动态的点击事件)  @click="showSetRight(tableData.row)
+
+      <el-table-column label="操作" prop="desc">
+        <template slot-scope="tableData">
+          <el-button type="primary" size="small" plain icon="el-icon-edit" circle></el-button>
+          <el-button type="danger" size="small" plain icon="el-icon-delete" circle></el-button>
+          <el-button type="success" size="small" plain icon="el-icon-check" circle @click="showSetRight(tableData.row)"></el-button>
+        </template>
+      </el-table-column>
 
 
+        //树形菜单  :default-checked-keys 是一个数组，存放要勾选的id值    :default-expanded-keys="arrexpand"默认展开所有节点
+        <el-tree
+        :default-expanded-keys="arrexpand"
+        :default-checked-keys="arrgou"
+        :data="data2"
+        show-checkbox
+        node-key="id"
+        :props="defaultProps"
+      ></el-tree>
 
-     
+
+  async showSetRight(role) {
+      let newquan = [];
+      role.children.forEach(item1 => {
+        //循环第一层的数组
+        // newquan.push(item1.id);  //del
+        item1.children.forEach(item2 => {
+          //循环第二层的数组
+          // newquan.push(item2.id); //del
+          item2.children.forEach(item3 => {
+            newquan.push(item3.id);
+          });
+        });
+      });
+      this.arrgou = newquan;
+  }
+
+发现的bug  有一个超级管理员  是半选的状态  结果变成了全选
+解决  树形结构有一个特点  最里层的数据选了  外面的节点会相应的全选或者半选
+将前面的id不要添加进去
+
+      // 勾选该角色拥有的权限
+      let newquan = [];
+      role.children.forEach(item1 => {
+        //循环第一层的数组
+        newquan.push(item1.id);
+        item1.children.forEach(item2 => {
+          //循环第二层的数组
+          newquan.push(item2.id);
+          item2.children.forEach(item3 => {
+            newquan.push(item3.id);
+          });
+        });
+      });
+      this.arrgou = newquan;
+ 变为
+
+   // 勾选该角色拥有的权限
+      let newquan = [];
+      role.children.forEach(item1 => {
+        //循环第一层的数组
+        // newquan.push(item1.id);  //del
+        item1.children.forEach(item2 => {
+          //循环第二层的数组
+          // newquan.push(item2.id); //del
+          item2.children.forEach(item3 => {
+            newquan.push(item3.id);
+          });
+        });
+      });
+      this.arrgou = newquan;
+    
+12day-13day  需求  点击操作中的勾勾按钮  弹出对话框  然后增添权限
+请求路径  roles/:roleld/rights
+参数说明
+:roleld  角色id  不能够为空携带在url中
+rids   权限id列表  以，分割的权限id列表
+注意要这样写
+   const res = await this.$http.post(`roles/${this.currentroleid}/rights`,{rids:arr.join(",")});
+
+开始
+1==>注意点 拿到当前角色的id  借助上一个方法拿到角色id
+ async showSetRight(role) {
+   this.currentroleid=role.id;//拿到当前角色的id
+ }
 
 
+2==> 获取树形结构全选的id  使用getCheckedKeys()它返回来的是一个数组  (arr1)
+      // el-tree--》js方法 getCheckedKeys()
+      // 1 给要操作的dom元素  设置ref属性值    input.ref="txt"
+      // 2 this.refs.ref属性值.js方法名()     this.$refs.txt.focus()
+  
+
+设置标识通过ref
+  <el-tree
+        ref="tree"  //new标识
+        :default-expanded-keys="arrexpand"
+        :default-checked-keys="arrgou"
+        :data="data2"
+        show-checkbox
+        node-key="id"
+        :props="defaultProps"
+      ></el-tree>
+
+   
+  // 获取全选的id的数组  arr1  getCheckedKeys()它返回来的是一个数组
+  let arr1 = this.$refs.tree.getCheckedKeys();
+  
+  // 获取半选的id的数组   arr2 getHalfCheckedKeys()它返回来的是一个数组
+  let arr2 = this.$refs.tree.getHalfCheckedKeys();
+
+  //  合并两个数组
+  let arrhe = arr1.concat(arr2); // let arr=[...arr1,...arr2]
+  console.log("hebing", arrhe);
+
+
+3==>发送请求
+   const res = await this.$http.post(`roles/${this.currentroleid}/rights`, {
+        rids: arrhe.join(",")
+   });
+
+   最后在跟新视图
+
+总结：之所以要全选和半选是因为 有些是全选 有些是半选  
 
 
 14day 动态修改左侧的路由

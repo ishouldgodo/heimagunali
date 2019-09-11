@@ -63,7 +63,7 @@
       <el-table-column label="角色名称" prop="roleName"></el-table-column>
       <el-table-column label="角色描述" prop="roleDesc"></el-table-column>
       <el-table-column label="操作" prop="desc">
-        <template :slot-scope="tableData">
+        <template slot-scope="tableData">
           <el-button type="primary" size="small" plain icon="el-icon-edit" circle></el-button>
           <el-button type="danger" size="small" plain icon="el-icon-delete" circle></el-button>
           <el-button
@@ -87,12 +87,14 @@
         node-key="id" 每个节点的每一值  通常是data数据源中的key名id
         :default-expanded-keys="[2, 3]" 默认要展开的节点的id值
           
-        :default-checked-keys="[5]"
+        :default-checked-keys="[5]"  那些角色要打钩 它是一个数组 id代表该角色拥有该权限
          :default-expanded-keys="arrexpand"   default-expand-all默认展开所有节点 将:default-expanded-keys="[2, 3]"删除
 
       -->
       <el-tree
+        ref="tree"
         :default-expanded-keys="arrexpand"
+        :default-checked-keys="arrgou"
         :data="data2"
         show-checkbox
         node-key="id"
@@ -102,7 +104,7 @@
       <!-- 结束 -->
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button type="primary" @click="rolequanxian()">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -114,8 +116,11 @@ export default {
     return {
       tableData: [],
       dialogFormVisible: false, //默认隐藏对话框
+
       data2: [], //树形结构的数据
       arrexpand: [], //要展开的节点的id
+      arrgou: [], //勾选的权限
+      currentroleid: -1, //角色id
       defaultProps: {
         children: "children", //描述的是该节点 的容器数组（一级节点 下所有的节点）
         label: "authName" //label的值是文字描述  label的值 应该去数据源data2中去找
@@ -142,8 +147,9 @@ export default {
       this.getRolelist(); //成功之后再次调用
     },
 
-    // 修改 分配 权限
-    async showSetRight() {
+    // 分配 权限
+    async showSetRight(role) {
+      this.currentroleid = role.id; //拿到当前角色的id 下一方法rolequanxian要用
       const res = await this.$http.get(`rights/tree`);
       console.log("点我了", res);
       this.data2 = res.data.data;
@@ -162,11 +168,52 @@ export default {
           });
         });
       });
-
       this.arrexpand = arrtemp1;
+
+      // 勾选该角色拥有的权限
+      let newquan = [];
+      role.children.forEach(item1 => {
+        //循环第一层的数组
+        // newquan.push(item1.id);
+        item1.children.forEach(item2 => {
+          //循环第二层的数组
+          // newquan.push(item2.id);
+          item2.children.forEach(item3 => {
+            newquan.push(item3.id);
+          });
+        });
+      });
+      this.arrgou = newquan;
 
       // 点击弹出对话框
       this.dialogFormVisible = true;
+    },
+
+    // 确定按钮增添权限
+    async rolequanxian() {
+      // roleId当前要修改权限的角色id  ${this.currentroleid}
+      // rids 树形节点中所有全选和半选的label的id []
+
+      // 获取全选的id的数组  arr1  getCheckedKeys()它返回来的是一个数组
+      let arr1 = this.$refs.tree.getCheckedKeys();
+      // 获取半选的id的数组   arr2 getHalfCheckedKeys()它返回来的是一个数组
+      let arr2 = this.$refs.tree.getHalfCheckedKeys();
+
+      //  合并两个数组
+      let arrhe = arr1.concat(arr2); // let arr=[...arr1,...arr2]
+      console.log("hebing", arrhe);
+
+      // el-tree--》js方法 getCheckedKeys
+      // 1 给要操作的dom元素  设置ref属性值    input.ref="txt"
+      // 2 this.refs.ref属性值.js方法名()     this.$refs.txt.focus()
+
+      const res = await this.$http.post(`roles/${this.currentroleid}/rights`, {
+        rids: arrhe.join(",")
+      });
+      console.log("hha", res);
+      // 增添之后  跟新视图
+      this.getRolelist();
+      this.dialogFormVisible = false; //关闭对话框
     }
   }
 };
