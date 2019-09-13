@@ -117,7 +117,49 @@
       </el-tab-pane>
     </el-tabs>  
 
-06day 
+06day 06-项目-商品管理-添加商品-基本信息-级联选择器-文档-引入
+需求：假数据使用级联选择器
+
+:options="options  级联选择器options是用来绑定数据的
+ v-model="selectedOptions2"  selectedOptions2是一个数组 代表你选择了那些
+
+
+07day 07-项目-商品管理-添加商品-基本信息-级联选择器-获取分类数据
+需求:将拿到的数据渲染到练级选择器中
+ expand-trigger="hover"       hover的方式触发
+ :options="options"           数据源
+ v-model="selectedOptions2"   你选择的数据
+  @change="handleChange"      事件
+  :props="defaultProp"         数据对应名陈
+
+完成如下
+    (1)获取练级选择器的数据
+    async getGoodCate() {
+      const res = await this.$http.get(`categories?type=3`);
+      console.log("级联选择器", res);
+      this.options = res.data.data;
+    }
+
+    (2)级联选择器配置
+      <span class="demonstration">商品分类</span>
+      <el-cascader
+        expand-trigger="hover"
+        :options="options"
+        :props="defaultProp"
+        v-model="selectedOptions2"
+        @change="handleChange"
+      ></el-cascader>
+    
+
+     (3)练级菜单的数据
+      options: [], //练级菜单的数据
+      selectedOptions2: [1, 3, 6], //默认选择 1 3 6
+      defaultProp: {
+        label: "cat_name", //选项名字
+        value: "cat_id", //选项的id值
+        children: "children" //该选项下的下一个数组
+      }
+    
 
 
 
