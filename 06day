@@ -1,0 +1,127 @@
+1==>
+00day  md5加密
+
+
+01day-项目-商品管理-商品列表-准备组件
+需求：准备商品列表页面  跟用户列表是一样的 
+
+
+02day-项目-商品管理-添加商品-新建组件配置路由
+点击添加按钮  实现路由跳转
+@click="$router.push({name:"goodsadd"})
+
+
+03day 03-项目-商品管理-添加商品-步骤条
+
+<el-card></el-card>代替了div
+成为了
+<template>
+  <el-card>
+     
+  </el-card>
+</template>
+
+02==>使用自定义组件
+<my-bread value1="权限管理" value2="权限列表"></my-bread>
+
+
+03==》使用Alert 警告组件
+ <el-alert
+    title="成功提示的文案"
+    type="success"
+    center
+    show-icon>
+  </el-alert>
+
+04==》使用步骤条
+  <!-- 使用简单风格的步骤条 -->
+  :active="1"默认第一个打钩
+
+    <el-steps :active="1" finish-status="success" simple style="margin-top: 20px">
+      <el-step title="基本信息"></el-step>
+      <el-step title="商品参数"></el-step>
+      <el-step title="商品属性"></el-step>
+      <el-step title="商品图片"></el-step>
+      <el-step title="商品内容"></el-step>
+    </el-steps>
+  
+
+04day-项目-商品管理-添加商品-tabs
+01==>使用Tabs 标签页布局
+
+<el-tabs class="mytab" :tab-position="tabPosition" style="height: 200px;">
+      <el-tab-pane label="基本信息">用户管理</el-tab-pane>
+      <el-tab-pane label="商品参数">配置管理</el-tab-pane>
+      <el-tab-pane label="商品属性">角色管理</el-tab-pane>
+      <el-tab-pane label="商品图片">定时任务补偿</el-tab-pane>
+      <el-tab-pane label="商品内容">定时任务补偿2</el-tab-pane>
+ </el-tabs>
+  tabPosition: "left" //控制tab的位置
+
+
+
+ 02==>需求  当我点击tab栏中左侧的菜单时， 步骤条显示对应的步骤，并且打钩
+所以要找到tab当前点击的是第几个
+利用  v-model="xx" 和  <el-tab-pane name="1" label="基本信息">用户管理</el-tab-pane>中的name属性
+然后将那个值  绑定到步骤条上  步骤条上的active是一个数字类型的
+
+实现如下
+  <h1>测试tab当前点击的是第几个{{myactive}}</h1>
+    <el-tabs  v-model="active" class="mytab" tab-position="lef" style="height: 200px;">
+      <el-tab-pane name="1" label="基本信息">用户管理</el-tab-pane>
+      <el-tab-pane name="2" label="商品参数">配置管理</el-tab-pane>
+      <el-tab-pane name="3" label="商品属性">角色管理</el-tab-pane>
+      <el-tab-pane name="4" label="商品图片">定时任务补偿</el-tab-pane>
+      <el-tab-pane name="5" label="商品内容">定时任务补偿2</el-tab-pane>
+    </el-tabs>
+    
+    active: "1" //tab栏默认选中第一个
+
+最后在给添加一个属性值  :active="active" 就可以实现了（动态绑定）  active的值是一个数字类型的  :active="1*active"将字符串转为数字
+
+ <!-- 使用简单风格的步骤条 -->
+    <el-steps :active="1*active" finish-status="success" simple style="margin-top: 20px">
+      <el-step title="基本信息"></el-step>
+      <el-step title="商品参数"></el-step>
+      <el-step title="商品属性"></el-step>
+      <el-step title="商品图片"></el-step>
+      <el-step title="商品内容"></el-step>
+    </el-steps>
+
+05-项目-商品管理-添加商品-基本信息-表单绑定数据
+
+需求：在tab里面添加不同的内容
+老师在最外层的容器包裹了el-from  我没有
+
+    <el-tabs v-model="active" class="mytab" tab-position="left" style="height: 400px; ">
+      <!-- 第一个tab里面的内容 -->
+      <el-tab-pane name="1" label="基本信息">        
+        <!--  -->
+        <el-form label-position="left" label-width="80px" :model="formLabelAlign1">
+          <el-form-item label="商品名称">
+            <el-input v-model="formLabelAlign1.goods_name"></el-input>
+          </el-form-item>
+
+          <el-form-item label="商品价格">
+            <el-input v-model="formLabelAlign1.goods_price"></el-input>
+          </el-form-item>
+
+          <el-form-item label="商品重点">
+            <el-input v-model="formLabelAlign1.goods_weight"></el-input>
+          </el-form-item>
+          <el-form-item label="商品数量">
+            <el-input v-model="formLabelAlign1.goods_number"></el-input>
+          </el-form-item>
+        </el-form>
+        <!--  -->
+      </el-tab-pane>
+    </el-tabs>  
+
+06day 
+
+
+
+
+二、多光标
+1、按住alt，用鼠标左键点击，可以出现多个光标，输入的代码可以在光标处同时增加。
+https://blog.csdn.net/Gomeer/article/details/91417928

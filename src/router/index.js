@@ -31,6 +31,11 @@ const router = new Router({
           path: "/role",
           name: "role",
           component: () => import("../components/rights/role.vue")
+        },
+        {
+          path: "/goodsadd",
+          name: "goodsadd",
+          component: () => import("../components/goodsadd/goodsadd.vue")
         }
       ]
     }
