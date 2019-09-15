@@ -36,6 +36,11 @@ const router = new Router({
           path: "/goodsadd",
           name: "goodsadd",
           component: () => import("../components/goodsadd/goodsadd.vue")
+        },
+        {
+          path: "/fenleiparams",
+          name: "fenleiparams",
+          component: () => import("../components/fenleiparams/fenleiparams.vue")
         }
       ]
     }

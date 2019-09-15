@@ -76,54 +76,23 @@
         </el-form>
       </el-tab-pane>
 
-      <!--第四个 tab中的内容 -->
-      <el-tab-pane name="4" label="商品图片">
-        <el-upload
-          class="upload-demo"
-          action="http://api.xiaomadagege.cn:3001/api/private/v1/upload"
-          :headers="headers"
-          :on-preview="handlePreview"
-          :on-success="handleSuccess"
-          :on-remove="handleRemove"
-          list-type="picture"
-        >
-          <el-button size="small" type="primary">点击上传</el-button>
-          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-        </el-upload>
-      </el-tab-pane>
-
-      <!--  -->
-      <el-tab-pane name="5" label="商品内容">
-        <el-row>
-          <el-button type="primary" v-model="formLabelAlign1.goods_introduce" @click="addinfo">添加商品</el-button>
-        </el-row>
-        <quill-editor></quill-editor>
-      </el-tab-pane>
+      <el-tab-pane name="4" label="商品图片">定时任务补偿</el-tab-pane>
+      <el-tab-pane name="5" label="商品内容">定时任务补偿2</el-tab-pane>
     </el-tabs>
   </el-card>
 </template>
 
 <script>
-import "quill/dist/quill.core.css";
-import "quill/dist/quill.snow.css";
-import "quill/dist/quill.bubble.css";
-import { quillEditor } from "vue-quill-editor";
-
 export default {
   data() {
     return {
       active: "1", //tab栏默认选中第一个
 
       formLabelAlign1: {
-        goods_name: "", //商品名陈
+        goods_name: "",
         goods_price: "",
         goods_weight: "",
-        goods_number: "",
-        goods_introduce: "", //富文本
-
-        goods_cat: "",
-        pics: [], //图片路径
-        attrs: []
+        goods_number: ""
       },
 
       //练级菜单的数据
@@ -136,15 +105,8 @@ export default {
       },
       tab2arr: [],
 
-      tab3arr: [],
-      headers: {
-        Authorization: localStorage.getItem("token")
-      }
+      tab3arr: []
     };
-  },
-
-  components: {
-    quillEditor
   },
 
   created() {
@@ -152,12 +114,6 @@ export default {
   },
 
   methods: {
-    async addinfo() {
-      this.formLabelAlign1.goods_cat = this.selectedOptions2.join(",");
-      const res = await this.$http.post(`goods`, thisformLabelAlign1);
-      console.log("1212121", res);
-    },
-
     handleChange(value) {
       console.log(value);
     },
@@ -167,32 +123,6 @@ export default {
       const res = await this.$http.get(`categories?type=3`);
       console.log("级联选择器", res);
       this.options = res.data.data;
-    },
-
-    // 图片预览的时候 调用该方法
-    // file当前操作图片的相关信息
-    handlePreview(file) {
-      // console.log(file);
-    },
-
-    // 图片点击×的时候调用
-    handleRemove(file) {
-      console.log(file);
-      let Index = this.formLabelAlign1.pics.findIndex(item => {
-        return (item.pic = file.response.data.tmp_path);
-      });
-
-      this.formLabelAlign1.pics.splice(Index, 1);
-      console.log("tu", this.formLabelAlign1.pics);
-    },
-
-    // 图片上传成功的时候调用
-    handleSuccess(file) {
-      console.log("成功");
-      console.log("成功的第一个canshu", file);
-      this.formLabelAlign1.pics.push({
-        pic: file.data.tmp_path
-      });
     },
 
     // 点击tab时触发该函数
@@ -221,9 +151,8 @@ export default {
               item.attr_vals.length === 0
                 ? []
                 : item.attr_vals.trim().split(",");
+            console.log(item.attr_vals);
           });
-
-          console.log("ooppp", this.tab2arr);
         }
       } else if (this.active == "3") {
         //如果点击的是第三个tab栏
@@ -250,11 +179,5 @@ export default {
 }
 .mytab {
   margin-top: 20px;
-}
-</style>
-<style>
-.ql-container.ql-snow {
-  /* 最小高度  超出会自动增加 */
-  min-height: 200px !important;
 }
 </style>
