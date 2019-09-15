@@ -1,3 +1,109 @@
-01day==>
+01day==>未看
 
-02day==》02-项目-商品管理-分类参数-新建组件-路由配置
+02day==》02-项目-商品管理-分类参数-新建组件-路由配置 ok
+
+
+03-项目-商品管理-分类参数-动态参数-布局-配置级联选择器
+需求：写一个级联选择器
+
+  <!-- 级联选择器 -->
+    <span class="demonstration">商品分类</span>
+    <span>{{ this.selectedOptions2}}</span>
+    <el-cascader
+      clearable
+      expand-trigger="hover"
+      :options="options"
+      :props="defaultProp"
+      v-model="selectedOptions2"
+      @change="handleChange"
+    ></el-cascader>
+  </el-card>
+
+
+<script>
+export default {
+  data() {
+    return {
+      options: [], //练级菜单的数据
+      selectedOptions2: [1, 3, 6], //默认选择 1 3 6
+      defaultProp: {
+        label: "cat_name", //选项名字
+        value: "cat_id", //选项的id值
+        children: "children" //该选项下的下一个数组
+      }
+    };
+  },
+  created() {
+    this.getGoodCate();
+  },
+
+  methods: {
+    // 获取练级选择器的数据
+    async getGoodCate() {
+      const res = await this.$http.get(`categories?type=3`);
+      console.log("0000000", res);
+      this.options = res.data.data;
+    },
+
+    handleChange(value) {
+      console.log(value);
+    }
+  }
+};
+</script>
+
+
+
+04-项目-商品管理-分类参数-动态参数-获取动态参数数据
+01==》需求 只展示级联选择器的最后一栏
+
+属性show-all-levels定义了是否显示完整的路径，将其赋值为false则仅显示最后一级
+<el-cascader :options="options" :show-all-levels="false"></el-cascader>
+
+02===》 当级联选择器 选好了，长度为三时，获取动态参数
+  
+    // 第一个tab中的动态数据
+    tab1dongtai: []
+
+
+    // 当值改变就会触发这个函数
+    async handleChange(value) {
+      if (this.selectedOptions2.length == 3) {
+        // 获取动态参数
+        const res = await this.$http.get(
+          `categories/${this.selectedOptions2[2]}/attributes?sel=many`
+        );
+        this.tab1dongtai = res.data.data;
+        console.log("袁术", res.data.data);
+        // 将字符串转为数组
+        // this.tab1dongtai.forEach(item => {
+        //   item.attr_vals = item.attr_vals.trim().split(",");
+        // });
+
+        // 优化
+        this.tab1dongtai.forEach(item => {
+          item.attr_vals =
+            item.attr_vals.length === 0 ? [] : item.attr_vals.trim().split(",");
+        });
+        console.log("数据", this.tab1dongtai);
+      }
+    }
+
+
+    05day-项目-商品管理-分类参数-动态参数-表格渲染
+ 01==》需求：tab栏的切换
+
+    <!-- tab栏切换 -->
+    <h1>测试tab当前点击的是第几个{{active}}</h1>
+    <el-tabs v-model="active" class="mytab" tab-position="top" type="card" style="height: 200px;">
+      <el-tab-pane name="1" label="基本信息">动态参数</el-tab-pane>
+      <el-tab-pane name="2" label="商品参数">静态参数</el-tab-pane>
+    </el-tabs>
+
+     active: "1" //tab栏默认选中第一个
+
+
+02==》 制作表格  ok
+   
+ 
+
