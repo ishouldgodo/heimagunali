@@ -29,18 +29,14 @@
         <!--表格  -->
         <el-table :data="newarrpar" style="width: 100%">
           <el-table-column type="expand" label="#值">
-            <!-- 这里面显示展开后的内容 
-              scope.row.attr_vals  是一个数组，你接受到数据后 处理成了数组
-              @close="handleClose(scope.row.attr_vals,tag)"  动态传递参数  tag是一个下标值
-            
-            -->
+            <!-- 这里面显示展开后的内容 -->
             <template slot-scope="scope">
               <el-tag
                 :key="tag"
                 v-for="tag in scope.row.attr_vals"
                 closable
                 :disable-transitions="false"
-                @close="handleClose(scope.row.attr_vals,scope.row.attr_id,tag,attr_name)"
+                @close="handleClose(scope.row.attr_vals,tag)"
               >{{tag}}</el-tag>
               <el-input
                 class="input-new-tag"
@@ -110,7 +106,9 @@ export default {
 
     // 当值改变就会触发这个函数
     async handleChange() {
-      const res = await this.$http.get(`categories/3/attributes?sel=many`);
+      const res = await this.$http.get(
+        `categories/${this.selectedOptions2[2]}/attributes?sel=many`
+      );
       console.log("SHU", res.data.data);
     },
 
@@ -133,21 +131,9 @@ export default {
 
     //  -----
     // 点击×删除
-    async handleClose(attr_vals, attr_id, tag, attr_name) {
-      attr_vals.splice(attr_vals.indexOf(tag), 1);
-      console.log("attr_id", attr_id);
+    handleClose(attr_tag, tag) {
       //tag是下标
-      let putData = {
-        attr_name: attr_name,
-        attr_sel: "many",
-        attr_vals: attr_vals.join(",")
-      };
-
-      const res = await this.$http.put(
-        `categories/${this.selectedOptions2[2]}/attributes/${attr_id}`,
-        putData
-      );
-      console.log("ok", res);
+      attr_tag.splice(attr_tag.indexOf(tag), 1);
     },
 
     showInput() {

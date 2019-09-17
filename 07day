@@ -91,19 +91,111 @@ export default {
 
 
     05day-项目-商品管理-分类参数-动态参数-表格渲染
- 01==》需求：tab栏的切换
+ 01==》需求：水平tab栏的切换
 
     <!-- tab栏切换 -->
     <h1>测试tab当前点击的是第几个{{active}}</h1>
-    <el-tabs v-model="active" class="mytab" tab-position="top" type="card" style="height: 200px;">
-      <el-tab-pane name="1" label="基本信息">动态参数</el-tab-pane>
-      <el-tab-pane name="2" label="商品参数">静态参数</el-tab-pane>
+    <el-tabs v-model="active" type="card" @tab-click="handleClick">
+      <el-tab-pane label="动态参数" name="1">用户管理</el-tab-pane>
+      <el-tab-pane label="静态参数" name="2">配置管理</el-tab-pane>
     </el-tabs>
-
-     active: "1" //tab栏默认选中第一个
+    <!--  tab栏切换 end -->
+    
+     active: "1", //tab栏默认选中第一个
+    
+    //tab栏切换触发这个函数
+    handleClick(tab, event) {
+      console.log(tab, event);
+    },
 
 
 02==》 制作表格  ok
-   
+第一次渲染展开行的数据（表面数据）
+    <h1>测试tab当前点击的是第几个{{active}}</h1>
+    <el-tabs v-model="active" type="card" @tab-click="handleClick">
+      <el-tab-pane label="动态参数" name="1">
+        <!-- 第一个tab中的内容 -->
+        <el-button type="danger">危险按钮</el-button>
+
+        <!--表格  -->
+        <el-table :data="newarrpar" style="width: 100%">
+          <el-table-column type="expand" label="#值">
+            <!-- 这里面显示展开后的内容 -->
+            <template :slot-scope="props"></template>
+          </el-table-column>
+
+          <!-- 展示的内容 -->
+          <el-table-column label="属性名陈" prop="attr_name"></el-table-column>
+          <el-table-column label="操作" prop="name">
+            <template :slot-scope="newarrpar">
+              <el-button type="primary" size="small" plain icon="el-icon-edit" circle></el-button>
+              <el-button type="danger" size="small" plain icon="el-icon-delete" circle></el-button>
+              <el-button type="success" size="small" plain icon="el-icon-check" circle></el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <!--  -->
+      </el-tab-pane>
+      <el-tab-pane label="静态参数" name="2">配置管理</el-tab-pane>
+    </el-tabs>
+
+
+     newarrpar: [], //表格数据
+     
+    //tab栏切换触发这个函数
+    handleClick(tab, event) {
+      console.log(tab, event);
+    },
+
+ 
+     //获取表格数据
+      async aa() {
+      const res = await this.$http.get(
+        `categories/${this.selectedOptions2[2]}/attributes?sel=many`
+      );
+      console.log("陨石", res.data.data);
+      this.newarrpar = res.data.data;
+    },
+
+  06-项目-商品管理-分类参数-动态参数-动态编辑-tag-文档-引入
+  动态编辑标签
+动态编辑标签可以通过点击标签关闭按钮后触发的 close 事件来实现  
  
 
+
+
+
+
+
+  v-for="tag in newarrpar.row.attr_vals"  玄幻的是一个字符串
+
+  attr_vals=“啊啊，vv,ff,ffuuu,opop”
+
+
+
+
+  forEach方法会改变原数组
+  借用forEach将字符串变为数组
+    this.newarrpar.forEach(item => {
+            item.attr_vals =
+              item.attr_vals.length === 0 ? [] : item.attr_vals.trim().split(",");
+     });
+
+
+07-项目-商品管理-分类参数-动态参数-动态编辑-tag-配置-完成
+需求==》完成展开行后的数据渲染
+
+ 你直接去 fenleiparams-展开行后数据渲染 看
+
+ 08-项目-商品管理-分类参数-动态参数-删除-发送请求
+ 删除一个小小的某一项 （08有其他青丘的接口）
+
+
+青丘路径  categories/:id/attributes/:attrld
+青丘方法 put
+青丘参数
+参数名       参数说明          备注   
+ :id         分类ID         不能为空，携带在url中   是${this.selectedOptions2[2]
+ :attrld     属性ID         不能为空，携带在url中
+
+ 08-项目-商品管理-分类参数-动态参数-删除-发送请求  删除有问题（重要）
