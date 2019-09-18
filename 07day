@@ -199,3 +199,203 @@ export default {
  :attrld     属性ID         不能为空，携带在url中
 
  08-项目-商品管理-分类参数-动态参数-删除-发送请求  删除有问题（重要）
+
+
+09-项目-商品管理-分类参数-动态参数-添加-发送请求
+需求：点击回车 或者失去焦点的时候  添加数据
+思路:在 回车 事件事件中发送ajax请求，这两个事件都是同一个函数
+@keyup.enter.native="handleInputConfirm(scope.row.attr_vals,  scope.row.attr_id,   scope.row.attr_name )"
+上面是动态传递参数， 
+scope.row.attr_vals===>是数组  这个数组是张开后中的值
+scope.row.attr_name===>是为展开时显示的值。 
+
+      <template slot-scope="scope">
+              <el-tag
+                :key="tag"
+                v-for="tag in scope.row.attr_vals"
+                closable
+                :disable-transitions="false"
+                @close="handleClose(scope.row.attr_vals,   scope.row.attr_id,   tag,   scope.row.attr_name)"
+              >{{tag}}</el-tag>
+              <el-input
+                class="input-new-tag"
+                v-if="inputVisible"
+                v-model="inputValue"
+                ref="saveTagInput"
+                size="small"
+                @keyup.enter.native="handleInputConfirm(scope.row.attr_vals,  scope.row.attr_id,   scope.row.attr_name )"
+                @blur="handleInputConfirm(scope.row.attr_vals,   scope.row.attr_id,   scope.row.attr_name )"
+              ></el-input>
+              <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+            </template>
+          </el-table-column>
+
+
+
+    // 回车是添加
+    async handleInputConfirm(attr_vals, attr_id, attr_name) {
+      let inputValue = this.inputValue;
+      if (inputValue) {
+        attr_vals.push(inputValue);
+
+
+        let putData = {
+          attr_name: attr_name,
+          attr_sel: "many",
+          attr_vals: attr_vals.join(",") //将字符串变为数组
+        };
+
+        const res = await this.$http.put(
+          `categories/${this.selectedOptions2[2]}/attributes/${attr_id}`,
+          putData
+        );
+        console.log("后端返回来的数据", res);
+      }
+      this.inputVisible = false;
+      this.inputValue = "";
+    }
+
+10-项目-商品管理-分类参数-静态参数-布局-获取数据
+需求：静态参数tab内容中的样似
+ ps==>  <el-table-column label="#" type="index"></el-table-column> <!-- 自动添加序号 -->
+         <el-table-column label="属性名陈" prop="attr_name"></el-table-column>  attr_name是数组中的某一个属性  可以自动去渲染
+
+
+获取第二个tab2中的数据
+
+    //tab栏切换触发这个函数
+    async handleClick(tab, event) {
+      console.log(tab, event);
+      if (this.active == 2) {
+        //点击的是第二个tab栏中的数据
+        const res = await this.$http.get(
+          `categories/${this.selectedOptions2[2]}/attributes?sel=only`
+        );
+        console.log("2", res);
+        this.tab2datatable = res.data.data;
+      }
+    },
+
+
+      <!-- 第2个tab -->
+      <el-tab-pane label="静态参数" name="2">
+        <el-button type="danger">危险按钮</el-button>
+
+        <!--表格  -->
+        <el-table :data="tab2datatable" style="width: 100%">
+         
+          <el-table-column label="#" type="index"></el-table-column> <!-- 自动添加序号 -->
+          <el-table-column label="属性名陈" prop="attr_name"></el-table-column>
+          <el-table-column label="属性值" prop="attr_vals"></el-table-column>
+          <el-table-column label="操作" prop="name">
+            <template :slot-scope="tab2datatable">
+              <el-button type="primary" size="small" plain icon="el-icon-edit" circle></el-button>
+              <el-button type="danger" size="small" plain icon="el-icon-delete" circle></el-button>
+              <el-button type="success" size="small" plain icon="el-icon-check" circle></el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <!--  -->
+      </el-tab-pane>
+
+
+      11-项目-商品管理-商品分类-准备组件-路由配置   ok
+14-项目-商品管理-商品分类-element-tree-grid-配置 的简单使用
+
+    树形表格
+    https://www.npmjs.com/package/element-tree-grid
+    
+
+  (1==>下载)  cnpm install element-tree-grid --save
+
+
+  引入   varElTreeGrid=require('element-tree-grid');
+
+  局部 注册
+  components: {
+    ElTreeGrid
+  },
+
+数据渲染那成功
+
+<template>
+  <div>
+    <!-- treeKey==>nodekey  节点唯一标识
+             parentkey  父亲节点的id
+             levelKey      当前节点的级别
+             childKey    子节点     
+       prop="cat_name" 显示的字段
+    -->
+    <el-table height="450" :data="tabdata1" style="width:100%">
+      <el-tree-grid
+        prop="cat_name"
+        label="分类显示"
+        treeKey="cat_id"
+        parentKey="cat_pid"
+        levelKey="cat_level"
+        childKey="children"
+      ></el-tree-grid>
+
+      <el-table-column label="级别">
+        <template slot-scope="tabdata1">
+          <span v-if="tabdata1.row.cat_level=='0'">一级</span>
+          <span v-else-if="tabdata1.row.cat_level=='1'">二级</span>
+          <span v-else-if="tabdata1.row.cat_level=='2'">三级</span>
+        </template>
+      </el-table-column>
+
+      <!-- cat_deleted slot-scope="tabdata1" 不能添加 :绑定 -->
+      <el-table-column label="是否有效">
+        <template slot-scope="tabdata1">
+          <span v-if="tabdata1.row.cat_deleted==false">无效</span>
+          <span v-else-if="tabdata1.row.cat_deleted==true">有效</span>
+        </template>
+      </el-table-column>
+
+      <!--  -->
+      <el-table-column label="操作" prop="name">
+        <template slot-scope="tabdata1">
+          <el-button type="primary" size="small" plain icon="el-icon-edit" circle></el-button>
+          <el-button type="danger" size="small" plain icon="el-icon-delete" circle></el-button>
+          <el-button type="success" size="small" plain icon="el-icon-check" circle></el-button>
+        </template>
+      </el-table-column>
+      <!--  -->
+    </el-table>
+  </div>
+</template>
+
+<script>
+var ElTreeGrid = require("element-tree-grid");
+export default {
+  data() {
+    return {
+      pagenum: 1,
+      pagesize: 10,
+      tabdata1: []
+    };
+  },
+  components: {
+    ElTreeGrid
+  },
+
+  created() {
+    this.getGoodsCate();
+  },
+
+  methods: {
+    async getGoodsCate() {
+      const res = await this.$http.get(
+        `categories?type=3&pagenum=${this.pagenum}&pagesize=${this.pagesize}`
+      );
+      this.tabdata1 = res.data.data.result;
+      console.log("88", res.data.data.result);
+    }
+  }
+};
+</script>
+
+<style  scoped>
+</style>
+
+15-项目-商品管理-商品分类-添加分类-打开对话框-获取数据 （未看）

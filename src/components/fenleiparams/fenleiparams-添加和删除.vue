@@ -67,27 +67,7 @@
         </el-table>
         <!--  -->
       </el-tab-pane>
-
-      <!-- 第2个tab -->
-      <el-tab-pane label="静态参数" name="2">
-        <el-button type="danger">危险按钮</el-button>
-
-        <!--表格  -->
-        <el-table :data="tab2datatable" style="width: 100%">
-          <el-table-column label="#" type="index"></el-table-column>
-          <!-- 自动添加序号 -->
-          <el-table-column label="属性名陈" prop="attr_name"></el-table-column>
-          <el-table-column label="属性值" prop="attr_vals"></el-table-column>
-          <el-table-column label="操作" prop="name">
-            <template :slot-scope="tab2datatable">
-              <el-button type="primary" size="small" plain icon="el-icon-edit" circle></el-button>
-              <el-button type="danger" size="small" plain icon="el-icon-delete" circle></el-button>
-              <el-button type="success" size="small" plain icon="el-icon-check" circle></el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <!--  -->
-      </el-tab-pane>
+      <el-tab-pane label="静态参数" name="2">配置管理</el-tab-pane>
     </el-tabs>
     <!--  tab栏切换 end -->
   </el-card>
@@ -112,9 +92,7 @@ export default {
       newarrpar: [], //表格数据
       dynamicTags: ["标签一", "标签二", "标签三"],
       inputVisible: false,
-      inputValue: "",
-
-      tab2datatable: [] //第二个tab栏中的数据
+      inputValue: ""
     };
   },
   created() {
@@ -136,16 +114,8 @@ export default {
     },
 
     //tab栏切换触发这个函数
-    async handleClick(tab, event) {
+    handleClick(tab, event) {
       console.log(tab, event);
-      if (this.active == 2) {
-        //点击的是第二个tab栏中的数据
-        const res = await this.$http.get(
-          `categories/${this.selectedOptions2[2]}/attributes?sel=only`
-        );
-        console.log("2", res);
-        this.tab2datatable = res.data.data;
-      }
     },
 
     async aa() {
