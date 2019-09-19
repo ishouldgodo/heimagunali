@@ -1,6 +1,7 @@
 manager.xiaomadagege.cn
 
-01==> 
+01==> 01-项目-用户管理-用户列表-面包屑和搜索框  ok
+
 el-card 是卡片  基础用法
 el-card它可以作为一个小荣器取代 <template>下的div
 el-card用来作为一个铺满的容器
@@ -14,14 +15,17 @@ el-card用来作为一个铺满的容器
   height: 100%;
 }
 
-02day==>
-面包写
+
+
+02==>面包写
+
 <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item><a href="/">用户管理</a></el-breadcrumb-item>
         <el-breadcrumb-item>用户列表</el-breadcrumb-item>
  </el-breadcrumb>
 
+04==》搜索框
 
  用了input中的 复合型输入框
  <el-row> <el-col> 是一行中有一列 new  你以前只晓得div
@@ -64,7 +68,7 @@ el-card用来作为一个铺满的容器
       console.log(res)
  }
 
-需要授权的Api
+需要授权的Api  获取到的token的值是从后台获取到存进去的
 async getUserlist(){
       // 需要授权的Api，必须在青丘头中使用Authorization 字段提供token令牌
       const AUTH_TOKEN=localStorage.getItem("token");
@@ -74,14 +78,13 @@ async getUserlist(){
     }
 
 
-05day
+05day05-项目-用户管理-用户列表-渲染数据-一般数据
 
-06day  处理世间格式
+06day  06-项目-用户管理-用户列表-渲染数据-日期格式处理
 
 cnpm i moment -S  
 
 template要使用内部的数据  设置slot-scope属性
-改属性的值是要用数据create_time的数据源tableData
 slot-scope的值tableData其实就是el-table绑定的数据tableData
 userlist.row是数组中的每一个对象
 
@@ -117,7 +120,6 @@ users.vue文件
 
 
 // 组装数据
-
 kaiguan: [true, true, false, true, true, false, true, true, false, false]
 
 for (var i = 0; i < this.tableData.length; i++) {

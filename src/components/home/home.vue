@@ -81,6 +81,8 @@
                     <el-menu-item index="goodsadd">商品列表</el-menu-item>
                     <el-menu-item index="fenleiparams">分类参数</el-menu-item>
                     <el-menu-item index="categories">商品分类</el-menu-item>
+                    <el-menu-item index="order">商品信息</el-menu-item>
+
                   </el-menu-item-group>
 
                   <el-submenu index="3-3">
@@ -88,6 +90,10 @@
                     <el-menu-item index="3-3-1">选项1</el-menu-item>
                   </el-submenu>
                 </el-submenu>
+
+           
+
+
               </el-menu>
             </el-col>
           </el-row>

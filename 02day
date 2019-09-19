@@ -1,23 +1,21 @@
 
-webpack.base.conf  基础配置
+ webpack.base.conf  基础配置
  webpack.dev.conf   开发路径
  webpack.prod.conf  生产
 
 本地服务器在dev.env.js中去配置
 生产服务器 在prod.env.js中服务
 
-.git
-eslint
+config  配置  
 
 
-03 文档分析
+03 文档分析(ok)
 DDFE技术文章
 
 
-04下载
-cnpm i  elementui@2.4.11 -S
+04下载elementui(0k)
 
-引入
+05-项目-准备-项目模板简化-调整(ok)
 
 06==>git的基本命令 ok
 创建github 项目名  赋值项目的地址
@@ -39,11 +37,10 @@ git push -u origin master  最后一步  推送到远程仓库
 最后这一步可能  有你输入你的  用户名 和账号  
 ishouldgodo  
 出现100%  说明推送成功了
-
 之后再推送直接 git push
 
 
-07day  ok 1
+07day  ok 
 查看有哪些分支  git  branch
 默认master分支
 
@@ -52,22 +49,43 @@ git  checkout -b 分支名
 
 此时在看看分支 发现有两个分支了
 
+将当前功能推送到 分支  git push origin 分支名
 
 ---------
-@  会指向src文件
+@ 会指向src文件
 
 08day ok
-
 form表单  对齐方式
 搭建html
 
-09day
+09-项目-登录-样式调整
 01==引入公共css
-assets下创建css文件夹 命名为reset.css
-它是公共样式 、
+assets下创建css文件夹 命名为reset.css (在本项目中你没有那样操作)
+它是公共样式 
 公共东西  在 main.js 文件中引入
+问题==》
+assets文件夹与static文件夹的区别
+https://www.cnblogs.com/x123811/p/9230700.html
 
-10day  ok
+
+相同点===>assets文件夹和static文件夹在vue-cli生成的项目中，都是用来存放静态资源的。
+不同点===>
+assets目录中的文件会被webpack处理解析为模块依赖，只支持相对路径形式。build的时候由Webpack解析为模块依赖。
+
+static/ 目录下的文件并不会被Webpack处理：它们会直接被复制到最终的打包目录（默认是dist/static）下。
+必须使用绝对路径引用这些文件，
+这是通过在 config/index.js 文件中的 build.assetsPublicPath 和 build.assetsSubDirectory 连接来确定的。
+任何放在 static/ 中文件需要以绝对路径的形式引用：/static/[filename]。
+
+
+config/index.js 文件如下:
+    assetsRoot: path.resolve(__dirname, '../dist'),
+    assetsSubDirectory: 'static',
+    assetsPublicPath: '/',
+
+
+
+10-项目-登录-axios-插件  ok
 Vue.use(xx)  这一种是vue插件的用法
 说明elementui就是一个插件
 
@@ -89,8 +107,9 @@ http.js文件如下
 import MyServerHttp from "@/plugins/http.js";
 Vue.use(MyServerHttp);
 
-11day ok
-01==》给axios设置统一的青丘地址 如何发送青丘
+
+11-项目-登录-发送登录请求(设置基础同意路径)   ok
+01==》给axios设置统一的青丘地址 如何发送青丘  将$http的原型放在了Vue的原型上
 http.js文件如下
 {
     import axios from "axios";
@@ -107,7 +126,8 @@ http.js文件如下
 this.$router.push({ name: "home" });  理由跳转
 结构不太懂
 
-this.formLabelAlign携带的参数
+
+this.formLabelAlign是携带的参数
   methods: {
     handleLogin() {
       this.$http.post("login", this.formLabelAlign).then(res => {
@@ -126,7 +146,7 @@ this.formLabelAlign携带的参数
   }
 
 
-  12day  
+12-项目-登录-引入提示框组件(ok) 
   01==》使用 消息提示
     this.$message("登录成功");  直接使用  注意this
 
@@ -142,15 +162,23 @@ this.formLabelAlign携带的参数
      console.log(msg)    //为密码错误
 
 
-将登录分支推送到远程仓库
-先查看 当前有几个分支   git  branch
-将当前功能推送到 分支  git push origin 分支名
+02===》如何将当前的分支推送到远程？
+(1)先查看 当前有几个分支   git  branch
+   默认master分支
+
+(2)创建一个分支 专门写登录功能  分支有开发分支 和生产分支
+   git  checkout -b 分支名
+
+ (2)将当前功能推送到远端服务器   分支  git push origin 分支名
 
 
-13day
+
+13-项目-登录-登录成功-进入 home 组件(ok)
 
 
-14day
+14-项目-登录-简化登录请求代码-async和await(ok)
+
+
 在异步操作 有结果的前面加一个await
 在距离改异步操作最近的函数面前加上一个 aynsc
 
@@ -206,25 +234,27 @@ handleLogin() {
     }
 
 
-15day
+15-项目-登录-保存token值(ok)
 用户登录成功后  保存token
    localStorage.setItem("token",data.token)
 
 
-16day
-后台布局容器
 
-17day
-样似头部
+16day-项目-首页-布局容器-使用-样式调整(ok)
 
+17day 项目-首页-头部-样式调整 ok
 
-18day
-19day 
+18day-项目-首页-侧边栏-导航组件-文档  ok
+
+19day-项目-首页-侧边栏-引入导航组件-调整 ok
 后台首页效果
 
 
-20如果用户有token 进入后端首页  若是没有  这不能进入后端  跳转到登陆页面
+20day-项目-首页-进入首页的权限验证  ok
+
+如果用户有token 进入后端首页  若是没有  这不能进入后端  跳转到登陆页面
 在home.vue中写  其实这样不安全
+
 <script>
 export default {
   data() {
@@ -243,12 +273,12 @@ export default {
 };
 </script>
 
-21day
+21day-项目-首页-头部-退出功能
 左边 如何图片100%显示
 阻止默认事件
 <a v-on:click.prevent="doThat"></a>
 
-22day 22-项目-首页-合并分支-新建用户分支
+22day 22-项目-首页-合并分支-新建用户分支  ok
 git add .
 git commit -m""
 
@@ -257,16 +287,16 @@ git checkout master   切换到主分支
 git branch 查看分支状态
 git merge dev-login(分支名)   合并分支
 git push
-1
+
 
 创建另外一个分支
 git checkout -b dev-users
 
-22day
 
-23day配置菜单  路由  以及中间容器
 
-unique-opened="true" 只保留一个菜单
+23day配置菜单  路由  以及中间容器 ok
+
+:unique-opened="true" 只保留一个菜单
 :router="true"开启路由标识
 index="users" 是标识 它就会去找这个路由
              
@@ -308,3 +338,5 @@ index="users" 是标识 它就会去找这个路由
 将路由的容器写在了home组件的main中
 <router-view></router-view>
 
+
+总结:

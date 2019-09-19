@@ -68,6 +68,7 @@ export default {
       const res = await this.$http.get(
         `categories?type=3&pagenum=${this.pagenum}&pagesize=${this.pagesize}`
       );
+      console.log("res",res)
       this.tabdata1 = res.data.data.result;
       console.log("88", res.data.data.result);
     }

@@ -1,3 +1,6 @@
+线上地址
+manager.xiaomadagege.cn
+
 01day==>未看
 
 02day==》02-项目-商品管理-分类参数-新建组件-路由配置 ok
@@ -399,3 +402,25 @@ export default {
 </style>
 
 15-项目-商品管理-商品分类-添加分类-打开对话框-获取数据 （未看）
+
+
+
+
+19-项目-订单管理-订单列表-省市区引入(ok)
+
+1==》学会构造假的数据
+在src下的==》assets==》js文件夹下 有city_data2017_element.js
+这个文件的格式数据
+export default [{}，{}，{}]
+
+然后在你需要用的这个页面导入  导入的两种方式
+@代表的是src目录
+
+// import   catlist  from "../../assets/js/city_data2017_element"  //导入数据
+import  catlist  from "@/assets/js/city_data2017_element"
+
+
+WOW整屏滚动(重点)
+
+线上地址
+manager.xiaomadagege.cn
