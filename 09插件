@@ -1,0 +1,23 @@
+
+给当前页面添加一张背景图
+.login-wrap {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url("../../assets/img/bg.jpg") no-repeat;
+}
+
+
+cnpm install vue-particles --save-dev 
+
+
+
+main.js//插件
+import VueParticles from 'vue-particles'
+Vue.use(VueParticles)
+
+
+
+
+https://blog.csdn.net/jerrica/article/details/80669038

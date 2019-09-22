@@ -50,8 +50,8 @@ el-card用来作为一个铺满的容器
 }  
 
 
-02day==>
-03day==>
+02day==>02-项目-用户管理-用户列表-引入表格组件
+03day==>03-项目-用户管理-用户列表-表头处理
 
   <el-table-column
        type="index" //序号从1开始排列
@@ -61,7 +61,7 @@ el-card用来作为一个铺满的容器
       </el-table-column>
 
 
-04day==>
+04day==>04-项目-用户管理-用户列表-请求数据-设置请求头
 发送青丘
  async getUserlist(){
       const res=await this.$http.get(`users?query=${this.query}&pagenum=${this.pagenum}&${this.pagesize}`)
@@ -82,7 +82,7 @@ async getUserlist(){
 
 06day  06-项目-用户管理-用户列表-渲染数据-日期格式处理
 
-cnpm i moment -S  
+(1)cnpm i moment -S  
 
 template要使用内部的数据  设置slot-scope属性
 slot-scope的值tableData其实就是el-table绑定的数据tableData
@@ -146,12 +146,334 @@ this.tableData[i]["kg"] = this.kaiguan[i];
 12day
   @clear="loadUserlist" 当你点击X小图标时，就会触发
 
-  13day
-  点击添加  弹出对应的对话框（未做）
+  13day 13-项目-用户管理-用户列表-添加用户-显示对话框 ok
+
+
+  点击添加  弹出对应的对话框）
   14daay   15day
-  16day   删除的提示框用的是 （MessageBox 弹框）--》（确认消息）
+  14-15-项目-用户管理-用户列表-添加用户-发送请求-处理响应
+  
+  需求====》点击对话框中的确定按钮  添加用户  发送请求
+
+    <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="getserverinfo()">确 定</el-button>
+    </div>
+
+      //   对话框的数据
+    dialogTableVisible: false, //
+    dialogFormVisible: false, //点击是否打开对话框
+
+
+
+  
+   // 点击确定按钮发送请求
+    async getserverinfo() {
+      this.dialogFormVisible = false;
+      const res = await this.$http.post(`users`, this.form);
+      console.log("添加成功", res);
+      
+      // 解构  
+      const {
+        meta: { msg, status }
+      } = res.data;
+
+      if (status == 201) {
+        this.$message({
+          showClose: true,
+          message: msg,
+          type: "success"
+        });
+        // 跟新试图
+         this.getUserlist();
+        //  清空弹出曾数据
+        this.form={};
+      }else{
+        this.$message({
+          showClose: true,
+          message: msg,
+          type: "error"
+        });
+
+      }
+    }
+
+
+
+02==>结构
+res.date={meta: {msg: "创建成功", status: 201}}
+解构
+const {
+  meta: { msg, status }
+} = res.data;
+
+
+
+搜索  添加都完成了了
+
+16day-项目-用户管理-用户列表-删除用户-打开确认框(删除功能)  
+删除的提示框用的是 （MessageBox 弹框）--》（确认消息）
+01==》防止误删除 MessageBox 弹框的运用
+
+     <el-table-column label="操作">
+        <template slot-scope="tableData">
+          <el-button type="primary" size="small" plain icon="el-icon-edit" circle></el-button>
+          <el-button type="success" size="small" plain icon="el-icon-check" circle></el-button>
+          <el-button
+            @click="mydelete()"
+            type="danger"
+            size="small"
+            plain
+            icon="el-icon-delete"
+            circle
+          ></el-button>
+        </template>
+      </el-table-column>
+
+          // 删除
+    mydelete() {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+
+
+
+17-项目-用户管理-用户列表-删除用户-处理响应
+   
+请求路径  users/:id
+delete
+
+
+
+      <el-table-column label="操作">
+        <template slot-scope="tableData">
+          <el-button type="primary" size="small" plain icon="el-icon-edit" circle></el-button>
+          <el-button type="success" size="small" plain icon="el-icon-check" circle></el-button>
+          <el-button
+            @click="mydelete(tableData.row.id)"  //删除用户id
+            type="danger"
+            size="small"
+            plain
+            icon="el-icon-delete"
+            circle
+          ></el-button>
+        </template>
+      </el-table-column>
+
+
+    // 删除
+    mydelete(userid) {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then( async () => {
+          const res=await this.$http.delete(`users/${userid}`); //注意这里的awaiit  离他最近的回调数前面添加 await
+          if(res.data.meta.status===200){
+                this.getUserlist();
+                 this.$message({
+                    type: "success",
+                    message: "删除成功!"
+                 });
+          }  
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+    },
+
+    
+18-项目-用户管理-用户列表-编辑用户-显示对话框 打开嵌套表格的 Dialog
+  点击编辑按钮  弹出对话框的显示
+  总结：注意两点  对话框
+  （1）:visible.sync="dialogFormVisible2"   dialogFormVisible2是绑定的数据
+   （2） dialogFormVisible2:false, 对话框消失
+
+
+     <el-table-column label="操作">
+        <template slot-scope="tableData">
+          <el-button type="primary"  @click="ediuserdata(tableData.row.id)" size="small" plain icon="el-icon-edit" circle></el-button>
+          <el-button type="success" size="small" plain icon="el-icon-check" circle></el-button>
+          <el-button
+            @click="mydelete(tableData.row)"
+            type="danger"
+            size="small"
+            plain
+            icon="el-icon-delete"
+            circle
+          ></el-button>
+        </template>
+      </el-table-column>
+
+
+    <!-- 编辑对话框 -->
+    <el-dialog title="收货地址" :visible.sync="dialogFormVisible2">
+
+        <el-form :model="ediform">
+            <el-form-item label="用户名" label-width="120px">
+               <el-input v-model="ediform.username" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="邮箱" label-width="120px">
+               <el-input v-model="ediform.email" autocomplete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="电话" label-width="120px">
+               <el-input v-model="ediform.mobile" autocomplete="off"></el-input>
+            </el-form-item>
+            
+        </el-form>
+
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible2 = false">取 消</el-button>
+            <el-button type="primary" @click="dialogFormVisible2 = false">确 定</el-button>
+        </div>
+
+    </el-dialog>
+    
+
+     //编辑对话框的数据
+      ediform:{
+        username: "",
+        email: "",
+        mobile: ""
+      },
+      dialogFormVisible2:false,
+      
+
+
+    // 编辑用户数据
+    ediuserdata(userinfo){
+      this.dialogFormVisible2=true;//打开编辑的对话框
+    }
+
+
 
   19day
-  当你发现表格区域的内容不够用的时候，你可以给表格一个固定的高度（重要）
+  当你发现表格区域的内容不够用的时候，你可以给表格一个固定的高度（重要） height="400px"
    <el-table :data="tableData" style="width: 100%" height="400px">
    此地超出就会显示 滚动条
+
+
+
+01-项目-用户管理-用户列表-编辑用户-显示编辑数据
+数据回填到编辑对话框
+  // 编辑用户数据
+  ediuserdata(userinfo){
+    this.dialogFormVisible2=true;//打开编辑的对话框
+    //将值赋予给ediform
+    this.ediform=userinfo;
+  }
+  将值复给ediform
+
+    <el-form-item label="用户名" label-width="120px">
+        <el-input v-model="ediform.username" autocomplete="off"></el-input>
+    </el-form-item>
+    他就会自动渲染出来
+
+
+ 02-项目-用户管理-用户列表-编辑用户-发送请求
+ 在修改数据的时候  需要使用用户id
+    
+    ediuserid: "" //编辑发送需要的id
+
+
+    // 编辑用户数据
+    ediuserdata(userinfo) {
+      this.dialogFormVisible2 = true; //打开编辑的对话框
+      //将值赋予给ediform
+      this.ediform = userinfo;
+      this.ediuserid = userinfo.id; //编辑发送请求需要deid
+    },
+
+    // 编辑先远程服务器发送数据
+    async getxiugaiuerdata() {
+      const res = await this.$http.put(`users/${this.ediuserid}`, this.ediform);
+      console.log("shifou ", res);
+
+      const {
+        meta: { msg, status }
+      } = res.data;
+      if (status == 200) {
+        this.$message({
+          showClose: true,
+          message: msg,
+          type: "success"
+        });
+        this.dialogFormVisible2 = false;
+      } else {
+        this.$message({
+          showClose: true,
+          message: msg,
+          type: "error"
+        });
+      }
+    }
+
+
+03-项目-用户管理-用户列表-修改用户状态 更该状态
+       <el-table-column label="用户状态" width="180">
+        <template slot-scope="tableData">
+          <el-switch
+            @change="getstate(tableData.row)"
+            v-model="tableData.row.mg_state"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+          ></el-switch>
+        </template>
+      </el-table-column>
+
+
+   async  getstate(row) {
+      alert("假装改变了");
+      const res=await this.$http.put(`users/${row.id}/state/${row.mg_state}`)
+    //   console.log("状态改变了",res);
+       const { meta: { msg, status }  } = res.data;
+      if(status==200){
+          this.$message({
+          showClose: true,
+          message: msg,
+          type: "success"
+          })
+      }
+    },
+
+
+ v-model="tableData.row.mg_state"是双向绑定
+ 所以可以没有设置false之类的就可以 动态变化开关
+
+ 04-项目-用户管理-用户列表-分配角色-功能演示 ok
+
+05-项目-用户管理-用户列表-分配角色-显示对话框
+   <el-select v-model="currRoleId">
+                <el-option label="请选择" :value="-1"></el-option>
+                <el-option label="区域二" value="beijing"></el-option>
+            </el-select>
+  currRoleId:"-1",
+
+  如果select绑定的数据的值，和option的value值一样
+  就会显示该option的label值
+
+06-项目-用户管理-用户列表-分配角色-显示对话框-下拉框 ok
+
+
+09-07-项目-用户管理-用户列表-分配角色-显示当前用户角色微刊

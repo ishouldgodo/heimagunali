@@ -1,1 +1,314 @@
-12节
+12节13-电影-首页
+
+
+1==》如何让轮播的宽度100%显示？
+你先给swiper 外面添加一个大盒子,给大盒子一个类 。 
+<view class='lunbobox'>
+然后wxss 里面设置 image , width: 100%; 在设置大盒子的宽度 width: 100%; 这样就可以了.
+
+
+<view class='lunbobox'>
+  <!-- 轮播开始 -->
+  <swiper  indicator-dots="{{indicatorDots}}"
+  circular
+  autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+  <block wx:for="{{imgUrls}}">
+    <swiper-item>
+      <image src="{{item}}" class="slide-image" width="750" height="150"/>
+    </swiper-item>
+  </block>
+</swiper>
+<!-- end -->
+</view>
+
+设置盒子的宽度 图片的宽度 让图片100%显示
+.lunbobox{
+  width: 750rpx;
+}
+
+.slide-image{
+  width: 100%;
+}
+
+
+
+2==》轮播的基础配置项
+   circular表示是否衔接  后面不要加true哦
+
+  <swiper  indicator-dots="{{indicatorDots}}"
+  circular
+  autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+  <block wx:for="{{imgUrls}}">
+    <swiper-item>
+      <image src="{{item}}" class="slide-image" width="355" height="150"/>
+    </swiper-item>
+  </block>
+</swiper>
+
+// 轮播
+imgUrls: [
+  'https://images.unsplash.com/photo-1551334787-21e6bd3ab135?w=750',
+  'https://images.unsplash.com/photo-1551214012-84f95e060dee?w=750',
+  'https://images.unsplash.com/photo-1551446591-142875a901a1?w=750'
+],
+indicatorDots: true, //是否显示小圆点  true显示
+autoplay: true,     //是否自动播放  true自动播放
+interval: 5000,     //播放的间隔
+duration: 1000,      //滑 动动画时长
+
+
+03==》跳转使用 它在导航里面的哦  <navigator></navigator>
+navigator标签类似于a标签，它里面是可以包含view标签的
+
+
+04==》如何循环三个导航链接
+ps: wx:for="{{labs}}" 循环的语法 labs是被循环的数组  注意有双引号  item是循环的每一项  
+
+ <navigator url="../list/list" hover-class="navigator-hover" wx:for="{{labs}}">
+    <view>{{item.title}}</view>
+ </navigator>
+
+// 导航链接的数据
+labs: [{ id: 1, title: "haha1" }, { id: 3, title: "haha2" }, { id: 3, title: "haha3" }]
+
+
+05==》css3最左最右 /* 导航 */ ok
+.daohangbox{
+  display: flex;
+  justify-content: space-between; //巧记两者之间  between说明一个在左一个在右
+}
+
+
+06==》导航链接的制作
+ <!-- 导航链接 -->
+ <navigator url="../list/list" hover-class="navigator-hover" wx:for="{{labs}}">
+    <view class='daohangbox'>
+      <text> {{item.title}}</text>
+      <text>></text>
+    </view>
+ </navigator>
+
+
+ /* 导航 */
+.daohangbox{
+  display: flex;
+  justify-content: space-between;
+  height: 40rpx;
+  background: pink;
+  margin-top: 30rpx;
+  padding: 15rpx;
+}
+
+// 标题的数据
+labs: [{ id: 1, title: "haha1" }, { id: 3, title: "haha2" }, { id: 3, title: "haha3" }]
+
+
+
+14-电影-列表-挂代理服务器绕过豆瓣
+
+
+01==》使用express快速搭建一个服务器
+     express  服务器名称
+
+     这个服务器目录跟微信是同级的哦（）
+
+     将app.js替换掉
+
+     yarn 安装依赖
+     yarn add http-proxy-middleware -D 安装依赖
+     yarn add cors -D 
+
+     然后cd  在然后yarn 就可以了
+
+
+02==》微信 出现了以下的错误（在发送青丘中容易出现的错误）
+request fail url not in domain list
+请求失败URL不在域列表中
+如何解决
+1==》点击右上角的详情   
+2==》然后勾上  不校验合法域名、web-view（业务域名）、TLS 版本以及 HTTPS 证书 ok
+
+
+03==》发送青丘,将值赋给data。
+注意：赋值使用的是 _this.setData({ })
+      是以冒号的形式赋值，
+      提前保存好this
+
+ 
+  data: {
+    arrlistdata:[],
+  },
+
+  /**
+ * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    let _this=this; //提前保存this  否者回调函数中的this为 underfined
+    wx.request({
+      url: 'https://edu.51cto.com/center/seckill/index/get-seckill-data', //请求地址
+      success(res) {
+        //成功的回调
+        console.log(res.data)
+        console.log(this);//undefined 为什么  因为它是在回调函数中 所以是underfined
+        console.log(_this) //ge {__wxExparserNodeId__: "2f542287", __route__: "pages/list/list"}
+
+        // 将值赋值给data
+        _this.setData({
+          arrlistdata:res.data.data.start.goods_data
+        })
+
+         console.log(res.data.data.start.goods_data)
+
+      }
+    })
+  },
+    
+
+05==>在微信小程序上，图片的宽度不能够100%显示？
+解决：父级元素宽度100%
+     图片宽度100%
+
+ <view class='imgbox'>
+  <image src="{{item.imgUrl}}" class="slide-image" width="750rpx" height="150"/>
+</view>
+
+.imgbox{ //父级元素宽度100%
+  width: 750rpx;
+
+}
+.slide-image{
+  width: 750rpx;
+}
+
+
+06==>数据渲染
+<view wx:for="{{arrlistdata}}">
+ <view class='imgbox'>
+  <image src="{{item.imgUrl}}" class="slide-image" width="750rpx" height="140rpx"/>
+</view>
+ <text>{{item.courseTitle}}</text>
+ <view class='pricebox'>
+ <view>现价:{{item.newPrice}}</view>
+ <view>原价:{{item.oldPrice}}</view>
+ </view>
+</view>
+
+
+07==》接受另一个页面传递过来的参数
+ <!-- 导航链接 -->
+ <navigator url="../list/list?a=123" hover-class="navigator-hover" wx:for="{{labs}}">
+    <view class='daohangbox'>
+      <text> {{item.title}}</text>
+      <text>></text>
+    </view>
+ </navigator>
+
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    console.log(options) //{a: "123"} a是你刚刚传递的参数名 123是参数值
+  }
+
+
+  08===>如何动态传递参数
+
+   <navigator url="../list/list?url={{item.url}}" hover-class="navigator-hover" wx:for="{{labs}}">
+    <view class='daohangbox'>
+      <text> {{item.title}}</text>
+      <text>></text>
+    </view>
+ </navigator>
+
+
+   labs: [{ id: 1, title: "正在上映", url: "/a" }, { id: 3, title: "即将上架", url: "/b" }, { id: 3, title: "Top250", url: "/c" }]
+  ok
+
+   14-电影-列表-需求分析
+   小程序里面取数据  没有冒号这么一说
+
+
+   加载动画  在对应页面 js文件中 showLoading你可以去看他的配置
+  /** * 生命周期函数--监听页面加载*/
+
+  onLoad: function (options) {
+    wx.showLoading();//加载提示
+  }
+
+  mask	boolean	false	否	是否显示（透明蒙层），防止触摸穿透 
+
+
+拿到数据后吟唱loading
+ wx.hideLoading();//拿到数据后 隐藏加载动画
+ 它是在会调用函数里面的 
+
+
+
+ 02==》添加图片跳转 待另外一个页面上去
+ 图片外层包裹内了一个navigator 作为跳转
+
+ <navigator class='imgbox' url="../moviexq/moviexq">
+  <image src="{{item.imgUrl}}" class="slide-image" width="750rpx" height="140rpx"/>
+ </navigator>
+
+
+03===》当你衣襟页面的时候 就要在onLoad:function(){}函数中发送请求
+
+
+04==》请求数据
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    wx.request({
+      url: 'test.php', //仅为示例，并非真实的接口地址
+      data: {
+        x: '',
+        y: ''
+      },
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success(res) {
+        console.log(res.data)
+      }
+    })
+  },
+
+
+
+05==》不过在小程序中<text>有一个让人感觉很坑的地方
+在微信小程序中有一个标签是<text>
+它相当于平常开发中用到的<span>标签，是一个行内元素
+
+就是<text>标签不能换行写，一旦换行了，其中的内容也会换行显示
+<text>1</text>
+<text>
+  2
+</text>
+这个时候输出的结果1和2不在同一行
+
+只有当2所对应的<text>在同一行时，输出的结果1和2才会
+<text>1</text>
+<text>2</text>
+原文链接：https://blog.csdn.net/sy19960721/article/details/80702900
+
+06==> text标签不能够居中
+text是行内元素 不能用text-align,你把text标签改成view 或者把text设置display:block.
+
+
+微信小程序的分享功能（不敢相信）
+<button open-type="share">分享</button>
+
+
+
+微信小程序的懒加载功能
+
+<!-- ————————————————
+版权声明：本文为CSDN博主「zhongjunyao」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/zjy_android_blog/article/details/82726859 -->
+
+
+    

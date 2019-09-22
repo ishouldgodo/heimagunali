@@ -27,6 +27,10 @@ Vue.use(MyServerHttp);
 
 Vue.component(MyBread.name, MyBread); //注册组件
 
+//插件
+import VueParticles from 'vue-particles'
+Vue.use(VueParticles) 
+
 /* eslint-disable no-new */
 new Vue({
   el: "#app",

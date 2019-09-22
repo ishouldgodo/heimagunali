@@ -46,11 +46,11 @@
                   </template>
                   <el-menu-item-group>
                     <el-menu-item index="users">用户列表</el-menu-item>
-                    <el-menu-item index="1-2">选项2</el-menu-item>
+                    <el-menu-item index="newuser">新用户列表</el-menu-item>
                   </el-menu-item-group>
                   <el-submenu index="1-3">
-                    <template slot="title">选项4</template>
-                    <el-menu-item index="1-3-1">选项1</el-menu-item>
+                    <template slot="title">插件</template>
+                    <el-menu-item index="lizichajain">粒子动画插件</el-menu-item>
                   </el-submenu>
                 </el-submenu>
 

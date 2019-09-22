@@ -21,6 +21,16 @@ const router = new Router({
           path: "/users",
           name: "users",
           component: () => import("../components/users/users.vue")
+        }, 
+         {
+           path: "/lizichajain",
+           name: "lizichajain",
+           component: () => import("../components/lizichajain/lizichajain.vue")
+        },
+        {
+          path: "/newuser",
+          name: "newuser",
+          component: () => import("../components/newuser/newuser.vue")
         },
         {
           path: "/rights",
