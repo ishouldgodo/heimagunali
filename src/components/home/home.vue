@@ -66,7 +66,7 @@
                   </el-menu-item-group>
 
                   <el-submenu index="2-3">
-                    <template slot="title">选项4</template>
+                    <template slot="title"></template>
                     <el-menu-item index="2-3-1">选项1</el-menu-item>
                   </el-submenu>
                 </el-submenu>

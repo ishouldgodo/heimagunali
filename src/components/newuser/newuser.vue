@@ -20,7 +20,7 @@
           clearable
         >
           <el-button slot="append" @click="getkeydata()" icon="el-icon-search"></el-button>
-        </el-input>
+          </el-input>
         <el-button type="primary" @click="adduserdata()">添加</el-button>
       </el-col>
     </el-row>
@@ -139,19 +139,24 @@
     <!-- 勾勾对话框 -->
     <el-dialog title="收货地址" :visible.sync="dialogFormVisible3">
         <el-form :model="form3">
-            <el-form-item label="活动名称" label-width="120px">
-            <el-input v-model="form3.name" autocomplete="off"></el-input>
+            <el-form-item label="用户名" label-width="120px">
+              {{currentName}}
             </el-form-item>
+
             <el-form-item label="活动区域" label-width="120px">
             <el-select v-model="currRoleId">
-                <el-option label="请选择" :value="-1"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
+                <el-option label="请选择"  :value="-1"></el-option>
+                <el-option 
+                 :label="item.roleName"
+                 :value="item.id"
+                 v-for="(item,i) in roles" :key="i"></el-option>
             </el-select>
             </el-form-item>
+
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible3 = false">取 消</el-button>
-            <el-button type="primary" @click="dialogFormVisible3 = false">确 定</el-button>
+            <el-button type="primary" @click="setRole()">确 定</el-button>
         </div>
     </el-dialog>
 
@@ -160,7 +165,7 @@
 </template>
 
 <script>
-import { async } from "q";
+
 export default {
   data() {
     return {
@@ -205,8 +210,12 @@ export default {
           resource: '',
           desc: ''
         },
+
          currRoleId:"-1",
          dialogFormVisible3: false,
+         currentName:"",
+         roles:[],//保存用户的角色
+         getuserid:"",//记录用户的id
     };
   },
   created() {
@@ -220,7 +229,7 @@ export default {
         `users?query=${this.query}&pagenum=${this.pagenum}&pagesize=${this.pagesize}`
       );
       this.alltotal = res.data.data.total;
-      //   console.log("用户数据", res);
+        console.log("用户数据", res);
 
       this.tableData = res.data.data.users;
       //   console.log("用户数据", this.tableData);
@@ -336,7 +345,7 @@ export default {
       }
     },
 
-    // 编辑用户数据
+    // 编辑用户数据 
     ediuserdata(userinfo) {
       this.dialogFormVisible2 = true; //打开编辑的对话框
       //将值赋予给ediform
@@ -368,8 +377,24 @@ export default {
       }
     },
 
-    getgou(row){
+    async getgou(row){
       this.dialogFormVisible3=true;
+       this.currentName=row.username;
+        this.getuserid=row.id;
+       const res1=await this.$http.get("roles");
+       console.log("res1",res1) 
+       this.roles=res1.data.data;
+
+       const res=await this.$http.get(`users/${row.id}`);
+       console.log("从远端胡",res)
+       this.currRoleId=res.data.data.rid;
+    },
+   
+  //  修改用户的角色 不休要刷新  因为点击对话按钮 会重新发送请求
+   async setRole(){
+        const res=await this.$http.put(`users/${this.getuserid}/role`,{rid:this.currRoleId});
+        console.log("shifou",res);
+        this.dialogFormVisible3=false;
     }
   }
 };

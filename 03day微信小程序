@@ -1,0 +1,63 @@
+1==  D:\wxxm  项目的地址
+
+
+2==》tabBar在全局配置中
+在pages的同级目录下创建images本地图标 （最好的是在远程获取img 因为微信是有大小限制的）
+
+其中 list 接受一个数组，只能配置最少 2 个、最多 5 个 tab。tab 按数组的顺序排序，每个项都是一个对象，其属性值如下：
+
+在app.json中去配置
+
+  "tabBar": {
+      "list": [
+        { 
+          "selectedIconPath":"images/home-on.png",
+          "iconPath":"images/home-off.png",
+          "pagePath": "pages/index/index",
+          "text": "首页"
+        },
+        {
+          "selectedIconPath": "images/kefu-on.png",
+          "iconPath": "images/kefu-off.png", 
+          "pagePath": "pages/logs/logs",
+          "text": "日志"
+        },
+
+        {
+          "selectedIconPath": "images/pengyoufill.png",
+          "iconPath": "images/pengyou.png",
+          "pagePath": "pages/person/person",
+          "text": "我的"
+        }
+     
+      ]
+  }
+
+  就会出现图标
+
+
+  ps==>app.json中不能有注释（重点）
+
+
+  注意你新创建的页面是否有在App.json有注入路由
+
+
+03==>绑定点击事件
+<view id="tapTest" data-hi="WeChat" bindtap="tapName"> 绑定点击事件 bindtap Click me! </view>
+
+//  事件
+tapName: function (event) {
+    console.log(event);//会有很多的东西在这里里面的哦
+}     
+
+04==》拨打电话
+
+<button  bindtap="tel">点击拨打电话</button>
+
+// 点击拨打电话
+tel(){
+  wx.makePhoneCall({
+    phoneNumber: '18383841513' //仅为示例，并非真实的电话号码
+  })
+}
+
