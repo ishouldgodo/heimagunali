@@ -82,6 +82,8 @@
                     <el-menu-item index="fenleiparams">分类参数</el-menu-item>
                     <el-menu-item index="categories">商品分类</el-menu-item>
                     <el-menu-item index="order">商品信息</el-menu-item>
+                    <el-menu-item index="local">使用局部组件</el-menu-item>
+
 
                   </el-menu-item-group>
 

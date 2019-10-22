@@ -7,6 +7,11 @@ import { Message } from "element-ui";
 const router = new Router({
   routes: [
     {
+      path: "/local",
+      name: "local",
+      component: () => import("../components/local/local.vue")
+    },
+    {
       path: "/login",
       name: "login",
       component: () => import("../components/login/login.vue")
@@ -21,11 +26,11 @@ const router = new Router({
           path: "/users",
           name: "users",
           component: () => import("../components/users/users.vue")
-        }, 
-         {
-           path: "/lizichajain",
-           name: "lizichajain",
-           component: () => import("../components/lizichajain/lizichajain.vue")
+        },
+        {
+          path: "/lizichajain",
+          name: "lizichajain",
+          component: () => import("../components/lizichajain/lizichajain.vue")
         },
         {
           path: "/newuser",

@@ -212,6 +212,13 @@ data中数据的值 来源于自己  由自己维护
 
 
 1==>写组件
+Vue注册全局组件的步骤
+(1) 写组件 
+(2)定义组件的名称 和数据
+(3)在main.js中引入
+(4)Vue.component("my-bread", MyBread);注册
+
+
 新建文件夹(cuscom)    文件(myBread.vue)
 在myBread.vue文件如下
 {
@@ -228,6 +235,7 @@ data中数据的值 来源于自己  由自己维护
     <script>
         // 自定义组件  面包屑
         export default {
+        name: "my-bread", //给组件起一个名字
         data() {
             return {};
         },
@@ -247,7 +255,7 @@ Vue.component("my-bread", MyBread); //注册组件
 在某个文件中使用
 <my-bread value1="权限管理" value2="权限列表"></my-bread>
 
-z组件的名字应该是写组件的人提供的
+组件的名字应该是写组件的人提供的
 将上面的优化一下
 1==》其他不变
 {

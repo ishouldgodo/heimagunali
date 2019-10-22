@@ -1,7 +1,5 @@
 ====》vue.20脚手架
-
 cnpm install --global vue-cli 全局安装脚手架
-
 vue init webpack my-project  创建项目
 
 
@@ -63,6 +61,5 @@ main.js
       return next({ 'path': '/err' })
    }
    });
- 
-
 }
+
