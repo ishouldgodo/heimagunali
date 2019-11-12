@@ -63,6 +63,7 @@ form表单  对齐方式
 assets下创建css文件夹 命名为reset.css (在本项目中你没有那样操作)
 它是公共样式 
 公共东西  在 main.js 文件中引入
+
 问题==》
 assets文件夹与static文件夹的区别
 https://www.cnblogs.com/x123811/p/9230700.html
@@ -70,10 +71,10 @@ https://www.cnblogs.com/x123811/p/9230700.html
 
 相同点===>assets文件夹和static文件夹在vue-cli生成的项目中，都是用来存放静态资源的。
 不同点===>
-assets目录中的文件会被webpack处理解析为模块依赖，只支持相对路径形式。build的时候由Webpack解析为模块依赖。
+assets目录中的文件会被webpack处理解析为模块依赖，【只支持相对路径形式】。build的时候由Webpack解析为模块依赖。
 
 static/ 目录下的文件并不会被Webpack处理：它们会直接被复制到最终的打包目录（默认是dist/static）下。
-必须使用绝对路径引用这些文件，
+必须使用【绝对路径】引用这些文件，
 这是通过在 config/index.js 文件中的 build.assetsPublicPath 和 build.assetsSubDirectory 连接来确定的。
 任何放在 static/ 中文件需要以绝对路径的形式引用：/static/[filename]。
 
@@ -278,13 +279,13 @@ export default {
 阻止默认事件
 <a v-on:click.prevent="doThat"></a>
 
-22day 22-项目-首页-合并分支-新建用户分支  ok
+22day 22-项目-首页-新建用户分支-合并分支-  ok 
 git add .
-git commit -m""
+git commit -m "" 一定要有空格哈
 
-
-git checkout master   切换到主分支
 git branch 查看分支状态
+git checkout master   切换到主分支
+
 git merge dev-login(分支名)   合并分支
 git push
 

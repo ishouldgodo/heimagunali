@@ -1,0 +1,19 @@
+//es5
+myBook = {
+    articel1: article1,
+    articel2: article2，
+    read: function(){
+        return 'reading...'
+    }
+}
+
+//es6中简写
+myBook = {
+    articel1,
+    articel2，
+    read(){
+        return 'reading'
+    }
+}
+
+https://pan.baidu.com/s/1fd5gRvd_Lo39EUqiuZHgXw

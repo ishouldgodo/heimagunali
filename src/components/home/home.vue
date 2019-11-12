@@ -83,8 +83,8 @@
                     <el-menu-item index="categories">商品分类</el-menu-item>
                     <el-menu-item index="order">商品信息</el-menu-item>
                     <el-menu-item index="local">使用局部组件</el-menu-item>
-
-
+                    <el-menu-item index="yuansutab">教材管理表格</el-menu-item>
+                    <el-menu-item index="markdown">富文本编辑器</el-menu-item>
                   </el-menu-item-group>
 
                   <el-submenu index="3-3">
@@ -92,10 +92,6 @@
                     <el-menu-item index="3-3-1">选项1</el-menu-item>
                   </el-submenu>
                 </el-submenu>
-
-           
-
-
               </el-menu>
             </el-col>
           </el-row>

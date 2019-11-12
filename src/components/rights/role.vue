@@ -137,7 +137,7 @@ export default {
     async getRolelist() {
       const res = await this.$http.get(`roles`);
       this.tableData = res.data.data;
-      console.log(res);
+      console.log("角色列表的数据", res);
     },
 
     // 删除权限

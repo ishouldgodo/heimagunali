@@ -14,7 +14,7 @@
             v-model="scope.row.zhi"
             placeholder="请选择"
             @change="change(scope.$index, scope.row)"
-          >
+           >
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -25,10 +25,16 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- tab组件组件 -->
+    <mytab :mytabledata="mytabledata"></mytab>
+    <!-- tab end -->
+
   </div>
 </template>
 
 <script>
+import mytab from "../../components/mytab/mytab";
 export default {
   data() {
     return {
@@ -81,10 +87,37 @@ export default {
           value: "5",
           label: "北京烤鸭"
         }
-      ]
+      ],
 
       // end-----
+      mytabledata: [
+        {
+          date: "2016-05-02",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1518 弄"
+        },
+        {
+          date: "2016-05-04",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1517 弄"
+        },
+        {
+          date: "2016-05-01",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1519 弄"
+        },
+        {
+          date: "2016-05-03",
+          name: "王小虎",
+          address: "上海市普陀区金沙江路 1516 弄"
+        }
+      ],
+
     };
+  },
+
+  components: {
+    mytab
   },
 
   methods: {

@@ -66,6 +66,11 @@ const router = new Router({
           path: "/order",
           name: "order",
           component: () => import("../components/order/order.vue")
+        },
+        {
+          path: "/markdown",
+          name: "markdown",
+          component: () => import("../page/markdown/markdown.vue")
         }
       ]
     }

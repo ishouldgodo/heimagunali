@@ -1,0 +1,151 @@
+使用less  安装两个包
+1===》cnpm install less less-loader --save-dev 
+
+
+less中的注释
+以 //开头的注释  不会被编译到css文件中去
+以 /**/  包裹的注释 会被编译到css 文件中去
+
+
+3===》
+1)使用@来声明一个变量  @pink:pink; 【颜色值】变为变量
+
+<p class="p">123</p>
+<style lang="less" scoped>
+@colorred: red;
+.p{
+  color: @colorred;
+}
+</style>
+
+<p class="p">123</p>
+2) css【属性】变为变量  将margin变为一个变量
+@m: margin;
+.p {
+  @m: 20px;
+  或者 @{m}: 30px;  推荐
+}
+
+3) 变量可以作为【选择器】 @{作用的元素}{}
+<span>33</span>
+
+@sp: span;
+@{sp} {
+  background: pink;
+}
+
+4）less作为url. @{}
+
+一般我们很少将 属性 和选择器  变为变量
+
+记住  less中的变量都是延迟加载的
+在less中的变量都是块级作用域
+一个{} 代表一个作用域 哈  这样可以避免变量污染
+
+
+
+less中的嵌套规则
+第一种嵌套规则
+div {
+    p{
+
+    }
+}
+
+第二种 &的使用 它代表的是平级
+ 光标放在span 上  出现变色
+  <div class="box">
+      <p class="p">123</p>
+      <span>33</span>
+    </div>
+
+.box {
+  span {
+    margin-top: 20px;
+    &:hover {
+      color: red;
+    }
+  }
+}
+
+必须要使用 &
+
+--------------------------
+混和
+需求  div 和span 都要 出现了相同的代码 这个时候就可以使用混合了
+
+ <style lang="less" scoped>
+.xiangtong {
+  width: 300px;
+  height: 300px;
+  background: red;
+  line-height: 300px;
+  text-align: center;
+  display: block;
+}
+
+.box {
+  .p {
+    .xiangtong;
+  }
+  span {
+    .xiangtong;
+  }
+}
+</style>
+
+---------------------
+带参数的混合哦
+p的宽高是100px, 200px 出现红色
+span的宽高是50px, 50px,  出现白色
+
+<template>
+  <div>
+    <div class="box">
+      <p class="p">123</p>
+      <span>33</span>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {};
+  }
+};
+</script>
+
+ <style lang="less" scoped>
+.xiangtong(@w,@h,@c) {
+  width: @w;
+  height: @h;
+  background: @c;
+  line-height: @h;
+  text-align: center;
+  display: block;
+}
+
+.box {
+  .p {
+    .xiangtong(100px, 200px, 200px,red);
+  }
+  span {
+    .xiangtong(50px, 50px, 50px,green);
+  }
+}
+</style>
+--------
+混合并且有默认参数哦
+.xiangtong(@w:100px,@h:50px,@c:red) {
+  width: @w;
+  height: @h;
+  background: @c;
+  line-height: @h;
+  text-align: center;
+  display: block;
+}
+
+-------------
+当形参和实参个数不一致的时候 你就可以指定 你的这个参数是给谁的(命名参数的混合)
+.xiangtong(@c:pink)

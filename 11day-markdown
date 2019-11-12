@@ -1,0 +1,48 @@
+1-项目-商品管理-添加商品-商品内容-富文本编辑器
+
+1)下载
+cnpm install vue-quill-editor --save
+
+2)在使用页面引入
+<script>
+import { quillEditor } from "vue-quill-editor"; //调用编辑器
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
+
+3)注册
+components: {
+    quillEditor
+  },
+
+4)使用  v-model="richContentValue"是你等会获取到的值
+
+<quill-editor
+      class="quill-editor-box ql-editor"
+      v-model="richContentValue"
+      ref="myQuillEditor"
+      :options="editorOption"
+      @blur="onEditorBlur($event)"
+      @focus="onEditorFocus($event)"
+      @change="onEditorChange($event)"
+></quill-editor>
+
+
+5)自定义功能
+// 自定义工具栏
+    editorOption: {
+    placeholder: "写记事", //修改提示文字
+    modules: {
+        toolbar: [
+        ["bold", "italic", "underline", "strike", { list: "ordered" }] // 自定义功能定义菜单栏上的功能
+        ]
+    }
+    }
+
+
+
+
+
+https://blog.csdn.net/div_ma/article/details/79536634 自定义功能
+
+

@@ -1,7 +1,7 @@
 import axios from "axios";
 const MyHttpServer = {};
 MyHttpServer.install = Vue => {
-  axios.defaults.baseURL = "http://api.xiaomadagege.cn:3001/api/private/v1/";
+  axios.defaults.baseURL = "http://api.xiaomadagege.cn:3355/api/private/v1/";
 
   // 添加请求拦截器--new add
   axios.interceptors.request.use(

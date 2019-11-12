@@ -116,6 +116,7 @@ export default {
       const res = await this.$http.get(`menus`);
       this.menutable = res.data.data;
     }
+    
   }
 };
 </script>
