@@ -22,15 +22,17 @@ Vue.use(ElementUI);
 
 // 引入
 import MyServerHttp from "@/plugins/http.js";
-import moment from "_moment@2.24.0@moment";
+import moment from "moment";
 Vue.use(MyServerHttp);
 
 Vue.component(MyBread.name, MyBread); //注册组件
 
 //插件
-import VueParticles from 'vue-particles'
-Vue.use(VueParticles) 
+import VueParticles from "vue-particles";
+Vue.use(VueParticles);
 
+// import VueCropper from "vue-cropper";
+// Vue.use(VueCropper);
 /* eslint-disable no-new */
 new Vue({
   el: "#app",

@@ -11,6 +11,7 @@ const router = new Router({
       name: "local",
       component: () => import("../components/local/local.vue")
     },
+
     {
       path: "/login",
       name: "login",
@@ -26,6 +27,11 @@ const router = new Router({
           path: "/users",
           name: "users",
           component: () => import("../components/users/users.vue")
+        },
+        {
+          path: "/tablehover",
+          name: "tablehover",
+          component: () => import("../../src/page/tablehover/tablehover.vue")
         },
         {
           path: "/lizichajain",
@@ -71,7 +77,26 @@ const router = new Router({
           path: "/markdown",
           name: "markdown",
           component: () => import("../page/markdown/markdown.vue")
+        },
+        {
+          path: "/newcomponent",
+          name: "newcomponent",
+          component: () => import("../page/newcomponent/newcomponent.vue")
+        },
+
+        // 平常练习
+        {
+          path: "/pingshilianxi",
+          name: "pingshilianxi",
+          component: () => import("../page/pingshilianxi/pingshilianxi.vue")
+        },
+        {
+          path: "/zujian",
+          name: "zujian",
+          component: () => import("../page/zujian/zujian.vue")
         }
+
+        
       ]
     }
   ]

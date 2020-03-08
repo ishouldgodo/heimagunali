@@ -226,7 +226,7 @@ Vue注册全局组件的步骤
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>
-            <a href="/">{{value1}}</a>
+              <a href="/">{{value1}}</a>
             </el-breadcrumb-item>
             <el-breadcrumb-item>{{value2}}</el-breadcrumb-item>
         </el-breadcrumb>
@@ -283,7 +283,7 @@ Vue.component(MyBread.name, MyBread); //注册组件
   <my-bread value1="权限管理" value2="权限列表"></my-bread>
 
   13day
-  每一个青丘 都要协泰青丘头 除了登录页面
+  每一个青丘 都要携带请求头 除了登录页面
   所以优化一下代码
   http.js文件如下
   {
@@ -347,8 +347,11 @@ Vue.component(MyBread.name, MyBread); //注册组件
  </el-table-column>
 
  16day
- 配置路由守卫
- const router = new Router({}) //整个实例出来
+  //整个实例出来     配置路由守卫 
+ const router = new Router({
+   //这里面是路由配置哈
+ }) 
+
 
  router.beforeEach((to, from, next) => {
   if (to.path == "/login") {
@@ -367,7 +370,6 @@ Vue.component(MyBread.name, MyBread); //注册组件
 
 另外一种 增加一个消失提示
 import { Message } from "element-ui"; //引入消失提示
-
 
 router.beforeEach((to, from, next) => {
   if (to.path == "/login") {

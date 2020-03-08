@@ -62,7 +62,7 @@ el-card用来作为一个铺满的容器
 
 
 04day==>04-项目-用户管理-用户列表-请求数据-设置请求头
-发送青丘
+发送请求
  async getUserlist(){
       const res=await this.$http.get(`users?query=${this.query}&pagenum=${this.pagenum}&${this.pagesize}`)
       console.log(res)
