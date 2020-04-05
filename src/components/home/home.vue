@@ -104,6 +104,10 @@
                                     <el-menu-item-group>
                                         <el-menu-item index="pingshilianxi">常用API1</el-menu-item>
                                         <el-menu-item index="zujian">常用组件</el-menu-item>
+                                        <el-menu-item index="tuozhuai">表格拖拽</el-menu-item>
+
+                                        
+
                                     </el-menu-item-group>
                                 </el-submenu>
                             </el-menu>

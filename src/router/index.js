@@ -94,6 +94,12 @@ const router = new Router({
           path: "/zujian",
           name: "zujian",
           component: () => import("../page/zujian/zujian.vue")
+        },
+
+         {
+           path: "/tuozhuai",
+           name: "tuozhuai",
+          component: () => import("../page/tabletz/tabletz.vue")
         }
 
         

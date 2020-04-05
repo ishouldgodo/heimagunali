@@ -4,10 +4,28 @@
       
 
       <aa v-model="name"></aa>
-      {{name}}
+
+      <!-- 上传 -->
+      <upload :uploadOption="uploadOption"
+               @upload="haha"
+               @beupload="opop"
+      ></upload>
+
+      <!-- 
+      <mask-add :show1.sync="show1"></mask-add>
+      <el-button @click="open">click</el-button>
+
+      <zidiaoyongfa :say="say"></zidiaoyongfa> -->
+
+      <el-button @click="caijian">裁剪</el-button>
+
     
-// render函数有哪些优势？？？？
-// 如何在<p></p>下面在创建一个元素。或者多件多个元素？？？？
+
+      
+
+
+
+
 
     
     </div>
@@ -15,7 +33,9 @@
 <script>
 import  timezhou  from "../../components/timezhou/timezhou"
 import aa from "./myrender"
-
+import upload from "../../components/upload/upload"
+import maskAdd  from "../../components/maskAdd/maskAdd"
+import zidiaoyongfa from "../../components/maskAdd/zidiaoyongfa"
     export default {
         data(){
             return{
@@ -24,35 +44,60 @@ import aa from "./myrender"
                   {img: require("../../assets/img/bg.jpg"), time:"2019-12-12", person:"班主任",advice:"同意" },
               ],
               name:"",
+              uploadOption:"",
+
+              show1: false,
+
+                tableData: [{
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1517 弄'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1519 弄'
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1516 弄'
+        }]
+
             }
         },
 
         components:{
             timezhou,
-            aa
+            aa,
+            upload,
+            maskAdd,
+            zidiaoyongfa
         },
-        created(){
-            // map函数会返回一个全新的函数哈（重要 在实际中很有用）
-            // map循环空那个数组时，不会报错的。
-            // 使用map的优势  可以返回一个全新的数组  可以用于过滤
+        
+        methods:{
+            haha(mess){
+                console.log(mess);
+            },
+            opop(mess){
+                console.log(mess);
+            },
 
-            let arr=["哈哈","嘿嘿","嘻嘻"];
-            arr.map(function(v,i,arr){
-             console.log(i); //i是索引值  从0开始的
-             console.log(v) //v代表的是类容
-            })
+            open () {
+                this.show1 = true;
+            },
+            fatherMethod(){
+                console.log("被子组件触发了")
+            },
+            say(){
+                console.log("haha  我要说话")
+            },
 
-            var move=[
-                {name:"张三", score:"9.3"},
-                {name:"李四", score:"8"}
-            ];
-            move.map(function (v) {
-                v.score=parseFloat(v.score); //将字符串变为了数字类型的。
-                return v;
-            });
-           console.log(move);
-
-
+            caijian(){
+                console.log("ha")
+            }
         }
     }
 </script>
